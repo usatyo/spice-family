@@ -1,7 +1,18 @@
-
+import os 
+import firebase_admin
+from firebase_admin import credentials
 from fastapi import FastAPI
+from dotenv  import load_dotenv
 
-app = FastAPI()
+load_dotenv()
+
+key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+print(key_path)
+cred = credentials.RefreshToken(key_path)
+default_app = firebase_admin.initialize_app(cred)
+
+
+app = FastAPI() 
 
 
 @app.get("/")
