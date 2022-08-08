@@ -6,11 +6,11 @@ from dotenv  import load_dotenv
 
 load_dotenv()
 
-key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-print(key_path)
-cred = credentials.RefreshToken(key_path)
-default_app = firebase_admin.initialize_app(cred)
-
+# key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+# print(key_path)
+# cred = credentials.RefreshToken(key_path)
+# default_app = firebase_admin.initialize_app(cred)
+default_app = firebase_admin.initialize_app()
 
 app = FastAPI() 
 
