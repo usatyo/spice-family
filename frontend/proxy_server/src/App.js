@@ -1,24 +1,20 @@
-import logo from './logo.svg';
 import './App.css';
+import { ChakraProvider } from '@chakra-ui/react';
+import { Box, Button, Stack, HStack } from "@chakra-ui/react";
+
 
 function App() {
   return (
-    <div className="App">
-
-      <header className="App-header">
-        <p>
-          hello world!
-        </p>
-        <a
-          className="App-link"
-          href="https://github.com/usatyo/spice-family"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Our proiject on github
-        </a>
-      </header>
-    </div>
+    <ChakraProvider>
+      <div className="App">
+        <header className="App-header">
+          <HStack p={10} spacing={4}>
+            <Box p={4} bg={"white"} shadow="lg" rounded="30" width={500} height={700}></Box>
+            <Box p={4} bg={"white"} shadow="lg" rounded="30" width={500} height={700}></Box>
+          </HStack>
+        </header>
+      </div>
+    </ChakraProvider>
   );
 }
 
