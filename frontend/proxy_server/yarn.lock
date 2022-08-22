@@ -1306,7 +1306,7 @@
     "@chakra-ui/transition" "2.0.8"
     "@chakra-ui/utils" "2.0.8"
 
-"@chakra-ui/modal@2.1.6":
+"@chakra-ui/modal@^2.1.6", "@chakra-ui/modal@2.1.6":
   "integrity" "sha512-uIQtD/XCS4YfPIsqBfMusDeUCSWvbT46wUcbyTNduldN5SXLOwqPZMGwX5BbyOMHUM6rRjc6RW4AeSj0rawo9w=="
   "resolved" "https://registry.npmjs.org/@chakra-ui/modal/-/modal-2.1.6.tgz"
   "version" "2.1.6"
