@@ -12,7 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Home />} />
+        <Route path="/" element={<Home />} />
         <Route path='/timer' element={<Timer />} />
         <Route path='/result' element={<Result />} />
       </Routes>
