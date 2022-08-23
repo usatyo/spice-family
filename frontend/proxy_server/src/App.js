@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Timer from './pages/Timer'
 import Result from './pages/Result'
 
+
 function App() {
   var primaryColor = '#59A4CB';
   return (
