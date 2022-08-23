@@ -28,6 +28,18 @@
   color: #61dafb;
 }
 
+textPrimaryBold {
+  color: #3e6bab;
+  font-weight: 700;
+  font-size: xx-large;
+}
+
+textPrimaryBigBold {
+  color: #3e6bab;
+  font-weight: 700;
+  font-size: 64px;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
