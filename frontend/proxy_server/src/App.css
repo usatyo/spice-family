@@ -45,8 +45,9 @@
 }
 
 .value {
-  font-size: 40px;
-  color: #3e6bab;
+  font-size: 50px;
+  font-weight: 700;
+  color: #777;
 }
 
 .info {
@@ -58,13 +59,13 @@
 
 
 textPrimaryBold {
-  color: #3e6bab;
+  color: #61dafb;
   font-weight: 700;
   font-size: xx-large;
 }
 
 textPrimaryBigBold {
-  color: #3e6bab;
+  color: #61dafb;
   font-weight: 700;
   font-size: 64px;
 }
