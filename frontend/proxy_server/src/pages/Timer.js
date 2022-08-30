@@ -1,6 +1,7 @@
 import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, Stack, HStack, Flex, Text, Center } from "@chakra-ui/react";
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
+import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './../App.css';
 import banImg from './../images/ban.png';
@@ -123,7 +124,10 @@ const Timer = () => {
                     <Modal isOpen={modalIsOpen} style={logStyles}>
                       <Text fontSize="xl" fontWeight="bold" colorScheme="blue">終了しますか？</Text>
                       <Text fontSize="lg" fontWeight="bold" colorScheme="blue">{playState}側のプレイヤーの敗北となります。</Text>
-                      <button onClick={() => setIsOpen(false)}>はい</button>
+                      <HStack>
+                        <button onClick={() => setIsOpen(false)}>いいえ</button>
+                        <Link to="/Result">はい</Link>
+                      </HStack>
                     </Modal>
                   </HStack>
                 </Box>
