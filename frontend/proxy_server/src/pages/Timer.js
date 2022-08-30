@@ -4,6 +4,18 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import React, { useState } from 'react';
 import './../App.css';
 import banImg from './../images/ban.png';
+import Modal from "react-modal";
+
+const logStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)',
+  },
+}
 
 const renderTime = ({ remainingTime }) => {
   const minutes = Math.floor(remainingTime / 60)
@@ -16,7 +28,9 @@ const renderTime = ({ remainingTime }) => {
     </div>
   );
 }
+
 const startLeft = false;
+
 //先手と後手のラベル
 const sente = <Box bg={"black"} rounded="full" w="100px" h="50px">
   <Center h='100%'>
@@ -39,6 +53,7 @@ const Timer = () => {
   const [playState, setPlayState] = useState((startLeft) ? "left" : "right");//変数,コール
   const [playCount, setPlayCount] = useState(1);
   const [isPause, setIsPause] = useState(false);
+  const [modalIsOpen, setIsOpen] = React.useState(false);
   var timerSeconds = 10 * 60;
   var leftBadge, rightBadge;
   if (startLeft) {
@@ -52,7 +67,7 @@ const Timer = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <AspectRatio w="full" ratio={16 / 9} >
+        <AspectRatio transform="perspective(600px) rotateX(0deg) scale(1,1)" w="full" ratio={16 / 9} >
           <HStack p={10} spacing={4}>
             {/* 左のプレイヤー(playState=0) */}
             <Box p={4} transition="0.5s" bg="white" border="2px" borderColor={(playState == "left" && isPause == false) ? "white" : "white"} shadow={(playState == "left" && isPause == false) ? "xl" : "sm"} rounded="41px" w="1000px" h="full" margin={"0%"}>
@@ -99,12 +114,17 @@ const Timer = () => {
                 </Box>
                 <Box w="full">
                   <HStack marginTop={4}>
-                    <Button colorScheme="blue" variant="outline" w="50%" h="70px" borderRadius={25} onClick={() => { setIsPause(!isPause) }}>
+                    <Button colorScheme="blue" border="2px" variant="outline" w="50%" h="70px" borderRadius={25} onClick={() => { setIsPause(!isPause) }}>
                       <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">一時停止</Text>
                     </Button>
-                    <Button colorScheme="blue" variant="solid" w="80%" h="70px" borderRadius={25} onClick={() => { }}>
+                    <Button colorScheme="blue" variant="solid" w="80%" h="70px" borderRadius={25} onClick={() => { setIsOpen(true) }}>
                       <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
                     </Button>
+                    <Modal isOpen={modalIsOpen} style={logStyles}>
+                      <Text fontSize="xl" fontWeight="bold" colorScheme="blue">終了しますか？</Text>
+                      <Text fontSize="lg" fontWeight="bold" colorScheme="blue">{playState}側のプレイヤーの敗北となります。</Text>
+                      <button onClick={() => setIsOpen(false)}>はい</button>
+                    </Modal>
                   </HStack>
                 </Box>
 
