@@ -1,21 +1,33 @@
-
-from fastapi import FastAPI
+from fastapi import FastAPI, UploadFile
+import uvicorn
 
 app = FastAPI()
 
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+async def root():
+    return {"message": "Hello World"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id):
-    return {"item_id": item_id}
+@app.post("/post/firstboard")
+def board_position(file: UploadFile):
+    return file
 
 
-fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+@app.post("/post/board")
+def read_item(skip: int = 10):
+    return {"item_id": skip}
+
+
+@app.post("/post/rate")
+def calc_rate():
+    return 0
+
 
 @app.get("/items/")
 def read_query_item(skip: int = 0, limit: int = 10):
-    return fake_items_db[skip : skip + limit]
+    return 0
+
+
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
