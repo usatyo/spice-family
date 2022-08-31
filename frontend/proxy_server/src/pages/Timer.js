@@ -54,7 +54,7 @@ const gote = <Box bg={"white"} border='1px' borderColor='black' rounded="full" w
 </Box>;
 const pausing = <Box bg={"blue.500"} rounded="full" w="200px" h="50px">
   <Center h='100%'>
-    <Text class="diffText" fontSize="25px" fontWeight="bold" color="white">停止中</Text>
+    <Text fontSize="25px" fontWeight="bold" color="white">停止中</Text>
   </Center>
 </Box>;
 
