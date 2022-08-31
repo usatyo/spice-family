@@ -1,11 +1,20 @@
 import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, Stack, HStack, Flex, Text, Center } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure
+} from '@chakra-ui/react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './../App.css';
 import banImg from './../images/ban.png';
-import Modal from "react-modal";
 
 const logStyles = {
   content: {
@@ -54,7 +63,8 @@ const Timer = () => {
   const [playState, setPlayState] = useState((startLeft) ? "left" : "right");//変数,コール
   const [playCount, setPlayCount] = useState(1);
   const [isPause, setIsPause] = useState(false);
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  //const [modalIsOpen, setIsOpen] = React.useState(false);
+  const { isOpen, onOpen, onClose } = useDisclosure();
   var timerSeconds = 10 * 60;
   var leftBadge, rightBadge;
   if (startLeft) {
@@ -116,19 +126,12 @@ const Timer = () => {
                 <Box w="full">
                   <HStack marginTop={4}>
                     <Button colorScheme="blue" border="2px" variant="outline" w="50%" h="70px" borderRadius={25} onClick={() => { setIsPause(!isPause) }}>
-                      <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">一時停止</Text>
+                      <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">{(isPause ? "再開" : "一時停止")}</Text>
                     </Button>
-                    <Button colorScheme="blue" variant="solid" w="80%" h="70px" borderRadius={25} onClick={() => { setIsOpen(true) }}>
+                    <Button colorScheme="blue" variant="solid" w="80%" h="70px" borderRadius={25} onClick={onOpen}>
                       <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
                     </Button>
-                    <Modal isOpen={modalIsOpen} style={logStyles}>
-                      <Text fontSize="xl" fontWeight="bold" colorScheme="blue">終了しますか？</Text>
-                      <Text fontSize="lg" fontWeight="bold" colorScheme="blue">{playState}側のプレイヤーの敗北となります。</Text>
-                      <HStack>
-                        <button onClick={() => setIsOpen(false)}>いいえ</button>
-                        <Link to="/Result">はい</Link>
-                      </HStack>
-                    </Modal>
+                    {endModal(isOpen, onClose, playState)}
                   </HStack>
                 </Box>
 
@@ -170,8 +173,30 @@ const Timer = () => {
           </HStack >
         </AspectRatio >
       </header >
+
     </div >
   )
 }
 
 export default Timer
+
+function endModal(isOpen, onClose, playState) {
+  return <Modal isOpen={isOpen} onClose={onClose}>
+    <ModalOverlay />
+    <ModalContent>
+      <ModalHeader>終了しますか?</ModalHeader>
+      <ModalCloseButton />
+      <ModalBody>
+        {playState}側のプレイヤーの敗北となります。
+      </ModalBody>
+      <ModalFooter>
+        <Button variant='ghost' onClick={onClose}>続ける</Button>
+        <Link to="/result">
+          <Button colorScheme='blue' mr={3}>
+            終了する
+          </Button>
+        </Link>
+      </ModalFooter>
+    </ModalContent>
+  </Modal>;
+}
