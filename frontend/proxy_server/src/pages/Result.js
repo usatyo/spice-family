@@ -95,9 +95,12 @@ const Result = () => {
                         </Flex>
 
                     </HStack >
-                    <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
-                        <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
-                    </Button>
+                    <Link to="/Home">
+                        <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
+                            <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
+                        </Button>
+                    </Link>
+
                 </Box>
             </header >
         </div >
