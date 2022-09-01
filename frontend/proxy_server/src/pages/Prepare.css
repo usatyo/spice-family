@@ -1,13 +1,4 @@
-.diffText {
-  animation: anim 5s;
-  animation-fill-mode: forwards;
-  font-weight: 700;
-  font-size: 50px;
-  color: rgba(88, 88, 88, 1);
-
-}
-
-.startFadeIn {
+.fadeIn {
   animation: anim 2s;
   animation-fill-mode: forwards;
 }
@@ -17,12 +8,12 @@
     transform: translateY(-20px);
   }
 
-  5% {
+  30% {
     transform: translateY(-20px);
     color: rgba(88, 88, 88, 1);
   }
 
-  20% {
+  50% {
     transform: translateY(-80px);
     color: rgba(0, 0, 0, 0);
   }

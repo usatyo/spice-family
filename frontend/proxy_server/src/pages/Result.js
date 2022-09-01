@@ -30,8 +30,9 @@ const Result = () => {
     return (
         <div className="App">
             <header className="App-header">
-                <Text fontSize="75px" fontWeight="bold" color="black">Result</Text>
-                <Box h="full" w="full">
+                <Box p="40px" h="full" w="full">
+                    <Text className='Title1' >Result</Text>
+                    <Text className='normal' >対戦結果</Text>
                     <HStack p={10}>
                         {/* 左のプレイヤー(playState=0) */}
                         <Flex w="full" align="center">
@@ -95,9 +96,12 @@ const Result = () => {
                         </Flex>
 
                     </HStack >
-                    <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
-                        <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
-                    </Button>
+                    <Link to="/Home">
+                        <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
+                            <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
+                        </Button>
+                    </Link>
+
                 </Box>
             </header >
         </div >
