@@ -1,5 +1,5 @@
 .diffText {
-  animation: anim 4s;
+  animation: anim 5s;
   animation-fill-mode: forwards;
   font-weight: 700;
   font-size: 50px;
@@ -17,12 +17,12 @@
     transform: translateY(-20px);
   }
 
-  30% {
+  5% {
     transform: translateY(-20px);
     color: rgba(88, 88, 88, 1);
   }
 
-  50% {
+  20% {
     transform: translateY(-80px);
     color: rgba(0, 0, 0, 0);
   }

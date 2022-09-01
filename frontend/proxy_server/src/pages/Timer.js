@@ -77,6 +77,10 @@ const Timer = () => {
   return (
     <div className="App">
       <header className="App-header">
+        <Box paddingLeft="40px" w="full">
+          <Text className='Title1' >Timer</Text>
+          <Text className='normal' >対局を行いましょう。</Text>
+        </Box>
         <AspectRatio transform="perspective(600px) rotateX(0deg) scale(1,1)" w="full" ratio={16 / 9} >
           <HStack p={10} spacing={4}>
             {/* 左のプレイヤー(playState=0) */}
