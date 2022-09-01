@@ -5,6 +5,7 @@ import './../App.css';
 import './Prepare.css';
 import img from './../images/prepare.png';
 import { Link } from 'react-router-dom';
+import Webcam from "react-webcam";
 
 const Prepare = () => {
     const [handeMode, setHandeMode] = React.useState("0");
