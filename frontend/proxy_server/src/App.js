@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/Home'
 import Timer from './pages/Timer'
 import Result from './pages/Result'
+import Prepare from './pages/Prepare'
 
 function App() {
   var primaryColor = '#59A4CB';
@@ -15,6 +16,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path='/timer' element={<Timer />} />
         <Route path='/result' element={<Result />} />
+        <Route path='/prepare' element={<Prepare />} />
       </Routes>
     </BrowserRouter>
   );
