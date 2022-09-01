@@ -15,7 +15,6 @@ import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './../App.css';
 import banImg from './../images/ban.png';
-
 const logStyles = {
   content: {
     top: '50%',
