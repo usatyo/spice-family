@@ -14,7 +14,7 @@ import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import React, { useState } from 'react';
 import './../App.css';
-import banImg from './../images/ban.png';
+import banImg from './../assets/ban.png';
 const logStyles = {
   content: {
     top: '50%',

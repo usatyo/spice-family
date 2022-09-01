@@ -3,7 +3,7 @@ import { Box, Button, HStack, Stack, Flex, Text, Center, Image, Radio, RadioGrou
 import React, { useState } from 'react';
 import './../App.css';
 import '../styles/Prepare.css';
-import img from './../images/prepare.png';
+import img from './../assets/prepare.png';
 import { Link } from 'react-router-dom';
 import Webcam from "react-webcam";
 
