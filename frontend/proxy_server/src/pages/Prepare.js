@@ -2,8 +2,8 @@ import { AspectRatio, Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, HStack, Stack, Flex, Text, Center, Image, Radio, RadioGroup, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper } from "@chakra-ui/react";
 import React, { useState } from 'react';
 import './../App.css';
-import './Prepare.css';
-import img from './../images/prepare.png';
+import '../styles/Prepare.css';
+import img from './../assets/prepare.png';
 import { Link } from 'react-router-dom';
 import Webcam from "react-webcam";
 
@@ -87,7 +87,7 @@ const Prepare = () => {
                         </VStack>
 
                     </Stack>
-                    <Link to="/Timer">
+                    <Link to="/timer">
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>
