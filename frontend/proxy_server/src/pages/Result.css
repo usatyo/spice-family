@@ -1,0 +1,51 @@
+.diffText {
+  animation: anim 5s;
+  animation-fill-mode: forwards;
+  font-weight: 700;
+  font-size: 50px;
+  color: rgba(88, 88, 88, 1);
+
+}
+
+.startFadeIn {
+  animation: anim 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes anim {
+  0% {
+    transform: translateY(-20px);
+  }
+
+  5% {
+    transform: translateY(-20px);
+    color: rgba(88, 88, 88, 1);
+  }
+
+  20% {
+    transform: translateY(-80px);
+    color: rgba(0, 0, 0, 0);
+  }
+
+  90% {
+    transform: translateY(-20px);
+    color: rgba(0, 0, 0, 0);
+  }
+
+  100% {
+    transform: translateY(-20px);
+    color: rgba(88, 88, 88, 1);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    transform: translateY(-20px);
+    opacity: 0.0;
+  }
+
+  100% {
+    transform: translateY(0px);
+    opacity: 1.0;
+  }
+}
