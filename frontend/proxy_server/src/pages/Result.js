@@ -5,7 +5,7 @@ import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import NumberEasing from 'react-number-easing';
 import React, { useState } from 'react';
 import './../App.css';
-import './Result.css';
+import '../styles/Result.css';
 
 
 const upIcon = <TriangleUpIcon w="50px" h="50px" color="red.500" />;
@@ -96,7 +96,7 @@ const Result = () => {
                         </Flex>
 
                     </HStack >
-                    <Link to="/Home">
+                    <Link to='/'>
                         <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
                         </Button>
