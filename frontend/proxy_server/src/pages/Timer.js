@@ -12,9 +12,22 @@ import {
 } from '@chakra-ui/react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import './../App.css';
 import banImg from './../assets/ban.png';
+import Webcam from "react-webcam";
+import { makeStyles } from "@material-ui/core/styles";
+
+//カメラを非表示にするために使用
+const useStyles = makeStyles(() => ({
+  webcam: {
+    position: "absolute",
+    top: "0px",
+    left: "0px",
+    visibility: "hidden",
+  },
+}));
+
 const logStyles = {
   content: {
     top: '50%',
@@ -25,6 +38,11 @@ const logStyles = {
     transform: 'translate(-50%, -50%)',
   },
 }
+const videoConstraints = {
+  width: 1920,
+  height: 1080,
+  facingMode: "user"
+};
 
 const renderTime = ({ remainingTime }) => {
   const minutes = Math.floor(remainingTime / 60)
@@ -58,6 +76,8 @@ const pausing = <Box bg={"blue.500"} rounded="full" w="200px" h="50px">
 </Box>;
 
 
+function sendImg(url) {
+}
 const Timer = () => {
   const [playState, setPlayState] = useState((startLeft) ? "left" : "right");//変数,コール
   const [playCount, setPlayCount] = useState(1);
@@ -73,6 +93,28 @@ const Timer = () => {
     leftBadge = gote;
     rightBadge = sente;
   }
+  //カメラ関連
+  const webcamRef = useRef(null);
+  const [url, setUrl] = useState(null);
+  const captureLeft = useCallback(() => {
+    setPlayState("right");
+    setPlayCount(playCount + 1);
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      setUrl(imageSrc);
+      sendImg(imageSrc);
+    }
+  }, [webcamRef]);
+  const captureRight = useCallback(() => {
+    setPlayState("left");
+    setPlayCount(playCount + 1);
+    const imageSrc = webcamRef.current?.getScreenshot();
+    if (imageSrc) {
+      setUrl(imageSrc);
+      sendImg(imageSrc);
+    }
+  }, [webcamRef]);
+  const classes = useStyles();
 
   return (
     <div className="App">
@@ -82,6 +124,22 @@ const Timer = () => {
             <Text className='Title1' >Timer</Text>
             <Text className='normal' >対局を行いましょう。</Text>
           </Box>
+          <Webcam
+            audio={false}
+            width={1920}
+            height={1080}
+            ref={webcamRef}
+            screenshotFormat="image/jpeg"
+            videoConstraints={videoConstraints}
+            className={classes.webcam}
+          />
+          {url && (
+            <>
+              <Box w="100px">
+                <img src={url} alt="Screenshot" />
+              </Box>
+            </>
+          )}
           <AspectRatio transform="perspective(600px) rotateX(0deg) scale(1,1)" w="full" ratio={16 / 9} >
             <HStack p={10} spacing={4}>
               {/* 左のプレイヤー(playState=0) */}
@@ -111,7 +169,7 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
-                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "left" || isPause != false)} onClick={() => { setPlayState("right"); setPlayCount(playCount + 1) }}>
+                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "left" || isPause != false)} onClick={captureLeft}>
                     <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">着手</Text>
                   </Button>
                 </VStack>
@@ -169,7 +227,7 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
-                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "right" || isPause != false)} onClick={() => { setPlayState("left"); setPlayCount(playCount + 1) }}>
+                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "right" || isPause != false)} onClick={captureRight}>
                     <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">着手</Text>
                   </Button>
                 </VStack>

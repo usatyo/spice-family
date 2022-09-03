@@ -1,15 +1,23 @@
 import { AspectRatio, Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, HStack, Stack, Flex, Text, Center, Image, Radio, RadioGroup, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper } from "@chakra-ui/react";
-import React, { useState } from 'react';
+import React, { useRef, useState, useCallback } from 'react';
 import './../App.css';
 import '../styles/Prepare.css';
 import img from './../assets/prepare.png';
 import { Link } from 'react-router-dom';
 import Webcam from "react-webcam";
 
+const videoConstraints = {
+    width: 1920,
+    height: 1080,
+    facingMode: "user"
+};
+
 const Prepare = () => {
     const [handeMode, setHandeMode] = React.useState("0");
     const [startLeft, setStartLeft] = React.useState("true");
+    //カメラ関連
+    const webcamRef = useRef(null);
     return (
         <div className="App">
             <header className="App-header">
@@ -32,8 +40,15 @@ const Prepare = () => {
                                 </VStack>
                             </Box>/
                             {/* カメラのプレビュー */}
-                            <Box float="right" p={4} bg="gray.50" border="2px" borderColor="blue.200" w="50%" h="350px" rounded="34px">
-
+                            <Box overflow="hidden" float="right" p={0} bg="gray.50" border="2px" borderColor="blue.200" w="50%" rounded="34px">
+                                <Webcam
+                                    audio={false}
+                                    width="full"
+                                    height="full"
+                                    ref={webcamRef}
+                                    screenshotFormat="image/jpeg"
+                                    videoConstraints={videoConstraints}
+                                />
                             </Box>
                         </HStack>
                     </Box>
