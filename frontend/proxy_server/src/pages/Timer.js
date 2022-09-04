@@ -56,58 +56,67 @@ const renderTime = ({ remainingTime }) => {
   );
 }
 
-const startLeft = false;
 
-//先手と後手のラベル
-const sente = <Box bg={"black"} rounded="full" w="100px" h="50px">
-  <Center h='100%'>
-    <Text fontSize="25px" fontWeight="bold" color="white">先手</Text>
-  </Center>
-</Box>;
-const gote = <Box bg={"white"} border='1px' borderColor='black' rounded="full" w="100px" h="50px">
-  <Center h='100%'>
-    <Text fontSize="25px" fontWeight="bold" color="black">後手</Text>
-  </Center>
-</Box>;
+
 const pausing = <Box bg={"blue.500"} rounded="full" w="200px" h="50px">
   <Center h='100%'>
     <Text fontSize="25px" fontWeight="bold" color="white">停止中</Text>
   </Center>
 </Box>;
 
+function XOR(a, b) {
+  return (a || b) && !(a && b);
+}
 
 function sendImg(url) {
 }
+
+var motizikan = 0;
+var byoyomi = 0;
+var kouryozikan = 0;
+var kouryokaisuu = 0;
+var hande = 0;
+var startLeft = false;
+
 const Timer = () => {
+  //ゲーム設定
+  motizikan = 1 * 60;
+  byoyomi = 30;
+  kouryozikan = 40;
+  kouryokaisuu = 3;
+  hande = 2;
+  startLeft = true;
+
   const [playState, setPlayState] = useState((startLeft) ? "left" : "right");//変数,コール
   const [playCount, setPlayCount] = useState(1);
   const [isPause, setIsPause] = useState(false);
-  //const [modalIsOpen, setIsOpen] = React.useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
   var timerSeconds = 10 * 60;
   var leftBadge, rightBadge;
-  if (startLeft) {
-    leftBadge = sente;
-    rightBadge = gote;
+  //先手と後手のラベル
+  const kuro = <Box bg={"black"} rounded="full" w="100px" h="50px">
+    <Center h='100%'>
+      <Text fontSize="25px" fontWeight="bold" color="white">{(hande == 2) ? "後手" : "先手"}</Text>
+    </Center>
+  </Box>;
+  const siro = <Box bg={"white"} border='1px' borderColor='black' rounded="full" w="100px" h="48px">
+    <Center h='100%'>
+      <Text fontSize="25px" fontWeight="bold" color="black">{(hande == 2) ? "先手" : "後手"}</Text>
+    </Center>
+  </Box>;
+  if (XOR(startLeft, hande == 2)) {
+    leftBadge = kuro;
+    rightBadge = siro;
   } else {
-    leftBadge = gote;
-    rightBadge = sente;
+    leftBadge = siro;
+    rightBadge = kuro;
   }
+
+
   //カメラ関連
   const webcamRef = useRef(null);
   const [url, setUrl] = useState(null);
-  const captureLeft = useCallback(() => {
-    setPlayState("right");
-    setPlayCount(playCount + 1);
-    const imageSrc = webcamRef.current?.getScreenshot();
-    if (imageSrc) {
-      setUrl(imageSrc);
-      sendImg(imageSrc);
-    }
-  }, [webcamRef]);
-  const captureRight = useCallback(() => {
-    setPlayState("left");
-    setPlayCount(playCount + 1);
+  const capture = useCallback(() => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       setUrl(imageSrc);
@@ -158,7 +167,7 @@ const Timer = () => {
                       duration={timerSeconds}
                       colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                       colorsTime={[60, 20, 10, 0]}
-                      onComplete={() => ({ shouldRepeat: true, delay: 1 })}
+                      onComplete={() => { }}
                     >
                       {renderTime}
                     </CountdownCircleTimer>
@@ -169,7 +178,11 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
-                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "left" || isPause != false)} onClick={captureLeft}>
+                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "left" || isPause != false)} onClick={() => {
+                    capture();
+                    setPlayState("right");
+                    setPlayCount(playCount + 1);
+                  }}>
                     <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">着手</Text>
                   </Button>
                 </VStack>
@@ -227,7 +240,11 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
-                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "right" || isPause != false)} onClick={captureRight}>
+                  <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "right" || isPause != false)} onClick={() => {
+                    capture();
+                    setPlayState("left");
+                    setPlayCount(playCount + 1);
+                  }}>
                     <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">着手</Text>
                   </Button>
                 </VStack>

@@ -59,9 +59,9 @@ const Prepare = () => {
                             <Box p={6} paddingRight={10} transition="0.5s" bg="white" shadow="xl" rounded="40px" margin={"0%"} w="full">
                                 <div className='Title2'>時間設定</div>
                                 <HStack>
-                                    <div className='normal'>・制限時間</div>
+                                    <div className='normal'>・持ち時間</div>
                                     <Spacer />
-                                    <NumberInput step={5} defaultValue={30} min={10} max={100}>
+                                    <NumberInput w="100px" step={5} defaultValue={30} min={10} max={100}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
@@ -71,9 +71,29 @@ const Prepare = () => {
                                     <div className='normal'>分</div>
                                 </HStack>
                                 <HStack>
+                                    <div className='normal'>・秒読み</div>
+                                    <Spacer />
+                                    <NumberInput w="100px" step={5} defaultValue={30} min={10} max={60}>
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                    <div className='normal'>秒</div>
+                                </HStack>
+                                <HStack>
                                     <div className='normal'>・考慮回数</div>
                                     <Spacer />
-                                    <NumberInput defaultValue={3} min={0} max={10}>
+                                    <NumberInput w="100px" step={5} defaultValue={40} min={10} max={60}>
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                    <div className='normal'>秒 ✗</div>
+                                    <NumberInput w="100px" defaultValue={3} min={0} max={10}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
@@ -82,6 +102,7 @@ const Prepare = () => {
                                     </NumberInput>
                                     <div className='normal'>回</div>
                                 </HStack>
+
                             </Box>
                             {/* 時間設定の枠 */}
                             <Box p={6} paddingRight={10} transition="0.5s" bg="white" shadow="xl" rounded="40px" margin={"0%"} w="full">
