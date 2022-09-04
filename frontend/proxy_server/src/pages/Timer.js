@@ -11,7 +11,7 @@ import {
   useDisclosure
 } from '@chakra-ui/react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
+import { useLocation, BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import React, { useRef, useState, useCallback } from 'react';
 import './../App.css';
 import banImg from './../assets/ban.png';
@@ -71,27 +71,30 @@ function XOR(a, b) {
 function sendImg(url) {
 }
 
-var motizikan = 0;
+var motijikan = 0;
 var byoyomi = 0;
-var kouryozikan = 0;
+var kouryojikan = 0;
 var kouryokaisuu = 0;
 var hande = 0;
 var startLeft = false;
 
+
+
 const Timer = () => {
   //ゲーム設定
-  motizikan = 1 * 60;
-  byoyomi = 30;
-  kouryozikan = 40;
-  kouryokaisuu = 3;
-  hande = 2;
-  startLeft = true;
+  const location = useLocation();
+  const { m, b, kj, kk, h, s } = location.state;
+  motijikan = m * 60;
+  byoyomi = b;
+  kouryojikan = kj;
+  kouryokaisuu = kk;
+  hande = h;
+  startLeft = s;
 
   const [playState, setPlayState] = useState((startLeft) ? "left" : "right");//変数,コール
   const [playCount, setPlayCount] = useState(1);
   const [isPause, setIsPause] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  var timerSeconds = 10 * 60;
   var leftBadge, rightBadge;
   //先手と後手のラベル
   const kuro = <Box bg={"black"} rounded="full" w="100px" h="50px">
@@ -164,7 +167,7 @@ const Timer = () => {
                       size={250}
                       strokeWidth={10}
                       isPlaying={(playState == "left" && isPause == false)}
-                      duration={timerSeconds}
+                      duration={motijikan}
                       colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                       colorsTime={[60, 20, 10, 0]}
                       onComplete={() => { }}
@@ -173,8 +176,15 @@ const Timer = () => {
                     </CountdownCircleTimer>
                   </Box>
                   <Box marginStart={10}>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
+                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{byoyomi}</Text>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒</Text>
+                  </Box>
+                  <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
-                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">1</Text>
+                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
+                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryokaisuu}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
@@ -226,7 +236,7 @@ const Timer = () => {
                       size={250}
                       strokeWidth={10}
                       isPlaying={(playState == "right" && isPause == false)}
-                      duration={timerSeconds}
+                      duration={motijikan}
                       colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                       colorsTime={[60, 20, 10, 0]}
                       onComplete={() => ({ shouldRepeat: true, delay: 1 })}
@@ -235,8 +245,15 @@ const Timer = () => {
                     </CountdownCircleTimer>
                   </Box>
                   <Box marginStart={10}>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
+                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{byoyomi}</Text>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒</Text>
+                  </Box>
+                  <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
-                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">1</Text>
+                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
+                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
+                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryokaisuu}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
