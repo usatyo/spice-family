@@ -84,7 +84,7 @@ const Timer = () => {
   //ゲーム設定
   const location = useLocation();
   const { m, b, kj, kk, h, s } = location.state;
-  motijikan = m * 60;
+  motijikan = m;
   byoyomi = b;
   kouryojikan = kj;
   kouryokaisuu = kk;
@@ -114,7 +114,12 @@ const Timer = () => {
     leftBadge = siro;
     rightBadge = kuro;
   }
-
+  const [kouryoLeft, setKouryoLeft] = useState(kouryokaisuu);
+  const [kouryoRight, setKouryoRight] = useState(kouryokaisuu);
+  const [byoyomiStateLeft, setByoyomiStateLeft] = useState(0);//0:通常 1:秒読み 2:考慮時間
+  const [byoyomiStateRight, setByoyomiStateRight] = useState(0);//0:通常 1:秒読み 2:考慮時間
+  const [keyL, setKeyL] = useState(0)//タイマーリセット用
+  const [keyR, setKeyR] = useState(0)
 
   //カメラ関連
   const webcamRef = useRef(null);
@@ -162,18 +167,66 @@ const Timer = () => {
                     <Spacer />
                   </HStack>
                   <Spacer />
+                  {(() => {
+                    if (byoyomiStateLeft == 1) {
+                      return <Box marginStart={10}>
+                        <Text as="span" fontSize={30} color="blue.500" fontWeight="bold">秒読みを開始します </Text>
+                      </Box>
+                    }
+                    if (byoyomiStateLeft == 2) {
+                      return <Box marginStart={10}>
+                        <Text as="span" fontSize={30} color="blue.500" fontWeight="bold">残り{kouryoLeft}回です</Text>
+                      </Box>
+                    }
+                  })()}
+
                   <Box transition="0.5s" shadow={(playState == "left" && isPause == false) ? "xl" : "sm"} rounded=" full" padding={2}>
-                    <CountdownCircleTimer
-                      size={250}
-                      strokeWidth={10}
-                      isPlaying={(playState == "left" && isPause == false)}
-                      duration={motijikan}
-                      colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
-                      colorsTime={[60, 20, 10, 0]}
-                      onComplete={() => { }}
-                    >
-                      {renderTime}
-                    </CountdownCircleTimer>
+                    {(() => {
+                      if (byoyomiStateLeft == 0) {
+                        return <CountdownCircleTimer
+                          size={250}
+                          strokeWidth={10}
+                          isPlaying={(playState == "left" && isPause == false)}
+                          duration={motijikan}
+                          colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
+                          colorsTime={[3600, 600, 300, 0]}
+                          onComplete={() => {
+                            setByoyomiStateLeft(1);
+                          }}
+                        >
+                          {renderTime}
+                        </CountdownCircleTimer>
+                      } else {
+                        return <CountdownCircleTimer
+                          size={250}
+                          key={keyL}
+                          strokeWidth={10}
+                          isPlaying={(playState == "left" && isPause == false)}
+                          duration={Math.max(byoyomi, kouryojikan)}
+                          colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
+                          colorsTime={[3600, 600, 300, 0]}
+                          onComplete={() => {
+                            switch (byoyomiStateLeft) {
+                              case 1://秒読み
+                                setByoyomiStateLeft(2);
+                                setKouryoLeft(kouryoLeft - 1);
+                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                              case 2://考慮時間
+                                if (kouryoLeft > 0) {
+                                  setKouryoLeft(kouryoLeft - 1);
+                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                } else {
+                                  alert("左のプレイヤーの時間切れとなります");
+                                  return { shouldRepeat: false };
+                                }
+                            }
+
+                          }}
+                        >
+                          {renderTime}
+                        </CountdownCircleTimer>
+                      }
+                    })()}
                   </Box>
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
@@ -184,12 +237,16 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
                     <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
-                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryokaisuu}</Text>
+                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryoLeft}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
                   <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "left" || isPause != false)} onClick={() => {
                     capture();
+                    if (byoyomiStateLeft != 0) {
+                      setKeyL(keyL + 1);//タイマーリセット
+                      setByoyomiStateLeft(1);
+                    }
                     setPlayState("right");
                     setPlayCount(playCount + 1);
                   }}>
@@ -231,18 +288,65 @@ const Timer = () => {
                     <Spacer />
                   </HStack>
                   <Spacer />
+                  {(() => {
+                    if (byoyomiStateRight == 1) {
+                      return <Box marginStart={10}>
+                        <Text as="span" fontSize={30} color="blue.500" fontWeight="bold">秒読みを開始します </Text>
+                      </Box>
+                    }
+                    if (byoyomiStateRight == 2) {
+                      return <Box marginStart={10}>
+                        <Text as="span" fontSize={30} color="blue.500" fontWeight="bold">残り{kouryoRight}回です</Text>
+                      </Box>
+                    }
+                  })()}
                   <Box transition="0.5s" shadow={(playState == "right" && isPause == false) ? "xl" : "sm"} rounded="full" padding={2}>
-                    <CountdownCircleTimer
-                      size={250}
-                      strokeWidth={10}
-                      isPlaying={(playState == "right" && isPause == false)}
-                      duration={motijikan}
-                      colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
-                      colorsTime={[60, 20, 10, 0]}
-                      onComplete={() => ({ shouldRepeat: true, delay: 1 })}
-                    >
-                      {renderTime}
-                    </CountdownCircleTimer>
+                    {(() => {
+                      if (byoyomiStateRight == 0) {
+                        return <CountdownCircleTimer
+                          size={250}
+                          strokeWidth={10}
+                          isPlaying={(playState == "right" && isPause == false)}
+                          duration={motijikan}
+                          colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
+                          colorsTime={[3600, 600, 300, 0]}
+                          onComplete={() => {
+                            setByoyomiStateRight(1);
+                          }}
+                        >
+                          {renderTime}
+                        </CountdownCircleTimer>
+                      } else {
+                        return <CountdownCircleTimer
+                          size={250}
+                          key={keyR}
+                          strokeWidth={10}
+                          isPlaying={(playState == "right" && isPause == false)}
+                          duration={Math.max(byoyomi, kouryojikan)}
+                          colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
+                          colorsTime={[3600, 600, 300, 0]}
+                          onComplete={() => {
+                            switch (byoyomiStateRight) {
+                              case 1://秒読み
+                                setByoyomiStateRight(2);
+                                setKouryoRight(kouryoRight - 1);
+                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                              case 2://考慮時間
+                                if (kouryoRight > 0) {
+                                  setKouryoRight(kouryoRight - 1);
+                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                } else {
+                                  alert("右のプレイヤーの時間切れとなります");
+                                  return { shouldRepeat: false };
+                                }
+                            }
+
+                          }}
+                        >
+                          {renderTime}
+                        </CountdownCircleTimer>
+                      }
+                    })()}
                   </Box>
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
@@ -253,12 +357,16 @@ const Timer = () => {
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
                     <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
-                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryokaisuu}</Text>
+                    <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryoRight}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
                   </Box>
                   <Spacer />
                   <Button transition="0.5s" colorScheme="blue" shadow="lg" variant="outline" border="2px" w="full" h="70px" borderRadius={25} disabled={(playState != "right" || isPause != false)} onClick={() => {
                     capture();
+                    if (byoyomiStateRight != 0) {
+                      setKeyR(keyR + 1);//タイマーリセット
+                      setByoyomiStateRight(1);
+                    }
                     setPlayState("left");
                     setPlayCount(playCount + 1);
                   }}>

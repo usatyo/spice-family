@@ -65,7 +65,7 @@ const Prepare = () => {
                                 <HStack>
                                     <div className='normal'>・持ち時間</div>
                                     <Spacer />
-                                    <NumberInput w="100px" step={5} defaultValue={30} min={10} max={100} value={motijikan} onChange={(value) => { setMatijikan(value) }}>
+                                    <NumberInput w="100px" step={5} defaultValue={30} min={0} max={100} value={motijikan} onChange={(value) => { setMatijikan(value) }}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
@@ -77,7 +77,7 @@ const Prepare = () => {
                                 <HStack>
                                     <div className='normal'>・秒読み</div>
                                     <Spacer />
-                                    <NumberInput w="100px" step={5} defaultValue={30} min={10} max={60} value={byoyomi} onChange={(value) => { setByoyomi(value) }}>
+                                    <NumberInput w="100px" step={5} defaultValue={30} min={0} max={60} value={byoyomi} onChange={(value) => { setByoyomi(value) }}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
@@ -89,7 +89,7 @@ const Prepare = () => {
                                 <HStack>
                                     <div className='normal'>・考慮回数</div>
                                     <Spacer />
-                                    <NumberInput w="100px" step={10} defaultValue={40} min={10} max={120} value={kouryojikan} onChange={(value) => { setKouryojikan(value) }}>
+                                    <NumberInput w="100px" step={10} defaultValue={40} min={0} max={120} value={kouryojikan} onChange={(value) => { setKouryojikan(value) }}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
