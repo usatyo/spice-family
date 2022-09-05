@@ -1,7 +1,8 @@
 import os 
 import firebase_admin
-from firebase_admin import credentials
-from fastapi import FastAPI
+from firebase_admin import credentials, auth
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import FastAPI, Depends, HTTPException, status
 from dotenv  import load_dotenv
 
 load_dotenv()
@@ -13,6 +14,21 @@ load_dotenv()
 default_app = firebase_admin.initialize_app()
 
 app = FastAPI() 
+
+
+def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+    try:
+        decoded_token = auth.verify_id_token(cred.credentials)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid authentication credentials',
+            headers={'WWW-Authenticate': 'Bearer'},
+        )
+
+    user = decoded_token['firebase']['identities']
+
+    return user
 
 
 @app.get("/")
@@ -30,3 +46,8 @@ fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"
 @app.get("/items/")
 def read_query_item(skip: int = 0, limit: int = 10):
     return fake_items_db[skip : skip + limit]
+
+
+@app.get("/me")
+def user_hello(current_user=Depends(get_current_user)):
+    return {"msg":"Hello","user":current_user}
