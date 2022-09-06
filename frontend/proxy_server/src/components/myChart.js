@@ -1,33 +1,35 @@
-import { Line, Bar } from 'react-chartjs-2'
+import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from "chart.js"
 
 Chart.register(...registerables)
 
-const MyChart = () => {
+const MyChart = (props) => {
+
+  const labels = [
+    // 軸ラベル
+    // 各ラベルを配列にすることで軸ラベルが改行されて表示される
+    '2021 / 10',
+    '2021 / 12',
+    '2021 / 11',
+    '2022 / 1',
+    '2022 / 2',
+    '2022 / 3',
+    '2022 / 4',
+    '2022 / 5',
+    '2022 / 6',
+    '2022 / 7',
+    '2022 / 8',
+    '2022 / 9',
+  ]
   /** グラフデータ */
   const graphData = {
-    labels: [
-      // 軸ラベル
-      // 各ラベルを配列にすることで軸ラベルが改行されて表示される
-      ['2019年', '1月'],
-      ['2019年', '2月'],
-      ['2019年', '3月'],
-      ['2019年', '4月'],
-      ['2019年', '5月'],
-      ['2019年', '6月'],
-      ['2019年', '7月'],
-      ['2019年', '8月'],
-      ['2019年', '9月'],
-      ['2019年', '10月'],
-      ['2019年', '11月'],
-      ['2019年', '12月'],
-    ],
+    labels: labels,
     datasets: [
       // 表示するデータセット
       {
-        data: [5.6, 7.2, 10.6, 13.6, 20, 21.8, 24.1, 28.4, 25.1, 19.4, 13.1, 8.5],
+        data: props.data,
         backgroundColor: 'rgba(30, 144, 255, 1)',
-        label: 'レート',
+        label: '直近12か月のレート',
       },
     ],
   };
@@ -41,7 +43,7 @@ const MyChart = () => {
           scaleLabel: {
             // x軸ラベルオプション
             display: true,
-            labelString: '2019年',
+            labelString: '2021年',
           },
         },
       ],
@@ -51,13 +53,13 @@ const MyChart = () => {
           scaleLabel: {
             // y軸ラベルオプション
             display: true,
-            labelString: '合計降水量(mm)',
+            labelString: 'レート',
           },
           ticks: {
             // y軸メモリオプション
             beginAtZero: true,
             callback: function (value, index, values) {
-              return `${value}(mm)`;
+              return value;
             },
           },
         },
