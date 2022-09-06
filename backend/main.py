@@ -1,33 +1,54 @@
-from fastapi import FastAPI, UploadFile
+from fastapi import FastAPI, File, UploadFile, Form, status
+from fastapi.responses import JSONResponse
 import uvicorn
+import detect_board
+from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost",
+    # TODO: フロントエンドデプロイしたらそのURLも入れる
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World"}
-
-
-@app.post("/post/firstboard")
-def board_position(file: UploadFile):
-    return file
+    return {"message": "this is root"}
 
 
 @app.post("/post/board")
-def read_item(skip: int = 10):
-    return {"item_id": skip}
+def _(
+    image: UploadFile = File(...),
+):
+    return {"file": image}
 
 
-@app.post("/post/rate")
-def calc_rate():
-    return 0
+@app.post("/post/move")
+def _():
+    return {}
 
 
-@app.get("/items/")
-def read_query_item(skip: int = 0, limit: int = 10):
-    return 0
+@app.post("/post/result")
+def _():
+    return {}
 
 
-# if __name__ == "__main__":
-#     uvicorn.run(app, host="0.0.0.0", port=8000)
+@app.get("/get/rate")
+def _():
+    return {}
+
+
+@app.get("/get/all_rate")
+def _():
+    return {}
