@@ -1,6 +1,7 @@
 from fastapi import FastAPI, File, UploadFile, Form, status
 from fastapi.responses import JSONResponse
 import uvicorn
+import detect_board
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -27,8 +28,11 @@ async def root():
 
 
 @app.post("/post/board")
-def _():
-    return {}
+def _(
+    image: UploadFile = File(...),
+):
+    
+    return {"file": image}
 
 
 @app.post("/post/move")
