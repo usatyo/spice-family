@@ -1,5 +1,5 @@
-from fastapi import FastAPI, File, UploadFile, Form, status
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import FileResponse
 import uvicorn
 import cv2
 import shutil
@@ -8,6 +8,7 @@ from detect_board import det_board
 from correct_board import cor_board
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
@@ -44,12 +45,14 @@ def _(
     print(y)
     # cor_board(im, x, y)
 
-    return {"cornerX": 1, "cornerY": 0}
+    return FileResponse("files/output.png")
 
 
 @app.post("/post/move")
-def _():
-    return {}
+def _(
+    upload_file: UploadFile = File(...),
+):
+    return FileResponse("files/output.png")
 
 
 @app.post("/post/result")
