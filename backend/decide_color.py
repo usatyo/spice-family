@@ -34,6 +34,6 @@ for i in range(BOARD):
 for i in range(BOARD):
     print(ans[i])
 
-cv2.imwrite("output_up_stone.jpg", circle_image)
-# cv2.imshow("image", circle_image)
-# cv2.waitKey()
+# cv2.imwrite("output_up_stone.jpg", circle_image)
+cv2.imshow("image", circle_image)
+cv2.waitKey()
