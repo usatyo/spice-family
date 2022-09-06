@@ -18,7 +18,6 @@ const Prepare = () => {
     const [startLeft, setStartLeft] = React.useState("true");
     const [motijikan, setMatijikan] = React.useState("40");
     const [byoyomi, setByoyomi] = React.useState("30");
-    const [kouryojikan, setKouryojikan] = React.useState("60");
     const [kouryokaisuu, setKouryokaisuu] = React.useState("3");
     //カメラ関連
     const webcamRef = useRef(null);
@@ -74,22 +73,11 @@ const Prepare = () => {
                                     </NumberInput>
                                     <div className='normal'>分</div>
                                 </HStack>
+
                                 <HStack>
                                     <div className='normal'>・秒読み</div>
                                     <Spacer />
-                                    <NumberInput w="100px" step={5} defaultValue={30} min={0} max={60} value={byoyomi} onChange={(value) => { setByoyomi(value) }}>
-                                        <NumberInputField />
-                                        <NumberInputStepper>
-                                            <NumberIncrementStepper />
-                                            <NumberDecrementStepper />
-                                        </NumberInputStepper>
-                                    </NumberInput>
-                                    <div className='normal'>秒</div>
-                                </HStack>
-                                <HStack>
-                                    <div className='normal'>・考慮回数</div>
-                                    <Spacer />
-                                    <NumberInput w="100px" step={10} defaultValue={40} min={0} max={120} value={kouryojikan} onChange={(value) => { setKouryojikan(value) }}>
+                                    <NumberInput w="100px" step={10} defaultValue={40} min={0} max={120} value={byoyomi} onChange={(value) => { setByoyomi(value) }}>
                                         <NumberInputField />
                                         <NumberInputStepper>
                                             <NumberIncrementStepper />
@@ -127,7 +115,7 @@ const Prepare = () => {
                         </VStack>
 
                     </Stack>
-                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kj: parseInt(kouryojikan), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true") }}>
+                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true") }}>
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>

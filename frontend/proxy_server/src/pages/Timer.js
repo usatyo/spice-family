@@ -73,7 +73,6 @@ function sendImg(url) {
 
 var motijikan = 0;
 var byoyomi = 0;
-var kouryojikan = 0;
 var kouryokaisuu = 0;
 var hande = 0;
 var startLeft = false;
@@ -83,10 +82,9 @@ var startLeft = false;
 const Timer = () => {
   //ゲーム設定
   const location = useLocation();
-  const { m, b, kj, kk, h, s } = location.state;
-  motijikan = m;
+  const { m, b, kk, h, s } = location.state;
+  motijikan = m * 60;
   byoyomi = b;
-  kouryojikan = kj;
   kouryokaisuu = kk;
   hande = h;
   startLeft = s;
@@ -202,7 +200,7 @@ const Timer = () => {
                           key={keyL}
                           strokeWidth={10}
                           isPlaying={(playState == "left" && isPause == false)}
-                          duration={Math.max(byoyomi, kouryojikan)}
+                          duration={Math.max(byoyomi, byoyomi)}
                           colors={(playState == "left" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                           colorsTime={[3600, 600, 300, 0]}
                           onComplete={() => {
@@ -210,11 +208,11 @@ const Timer = () => {
                               case 1://秒読み
                                 setByoyomiStateLeft(2);
                                 setKouryoLeft(kouryoLeft - 1);
-                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: byoyomi };
                               case 2://考慮時間
-                                if (kouryoLeft > 0) {
+                                if (kouryoLeft > 1) {
                                   setKouryoLeft(kouryoLeft - 1);
-                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: byoyomi };
                                 } else {
                                   alert("左のプレイヤーの時間切れとなります");
                                   return { shouldRepeat: false };
@@ -231,11 +229,6 @@ const Timer = () => {
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
                     <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{byoyomi}</Text>
-                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒</Text>
-                  </Box>
-                  <Box marginStart={10}>
-                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
-                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
                     <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryoLeft}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
@@ -322,7 +315,7 @@ const Timer = () => {
                           key={keyR}
                           strokeWidth={10}
                           isPlaying={(playState == "right" && isPause == false)}
-                          duration={Math.max(byoyomi, kouryojikan)}
+                          duration={Math.max(byoyomi, byoyomi)}
                           colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                           colorsTime={[3600, 600, 300, 0]}
                           onComplete={() => {
@@ -330,18 +323,19 @@ const Timer = () => {
                               case 1://秒読み
                                 setByoyomiStateRight(2);
                                 setKouryoRight(kouryoRight - 1);
-                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                return { shouldRepeat: true, delay: 1, newInitialRemainingTime: byoyomi };
                               case 2://考慮時間
-                                if (kouryoRight > 0) {
+                                if (kouryoRight > 1) {
                                   setKouryoRight(kouryoRight - 1);
-                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: kouryojikan };
+                                  return { shouldRepeat: true, delay: 1, newInitialRemainingTime: byoyomi };
                                 } else {
                                   alert("右のプレイヤーの時間切れとなります");
                                   return { shouldRepeat: false };
                                 }
                             }
+                          }
 
-                          }}
+                          }
                         >
                           {renderTime}
                         </CountdownCircleTimer>
@@ -351,11 +345,6 @@ const Timer = () => {
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
                     <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{byoyomi}</Text>
-                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒</Text>
-                  </Box>
-                  <Box marginStart={10}>
-                    <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">考慮回数 </Text>
-                    <Text as="span" fontSize={40} color="blue.500" fontWeight="bold">{kouryojikan}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒✗</Text>
                     <Text as="span" fontSize={40} color="gray.500" fontWeight="bold">{kouryoRight}</Text>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">回</Text>
