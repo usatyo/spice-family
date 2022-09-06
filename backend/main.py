@@ -31,7 +31,6 @@ async def root():
 def _(
     image: UploadFile = File(...),
 ):
-    
     return {"file": image}
 
 
