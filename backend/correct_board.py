@@ -36,7 +36,7 @@ def cor_board(image,x,y):
         circle_image = cv2.circle(image, (x[i], y[i]), 10, (255, 0, 0), thickness=-1)
 
 
-    cv2.imshow("image", circle_image)
-    cv2.imshow("board_image", output)
-    # cv2.imwrite("images/output_diag_stone2.jpg", output)
-    cv2.waitKey()
+    # cv2.imshow("image", circle_image)
+    # cv2.imshow("board_image", output)
+    cv2.imwrite("files/output.jpg", output)
+    # cv2.waitKey()

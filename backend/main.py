@@ -1,9 +1,14 @@
-from fastapi import FastAPI, File, UploadFile, Form, status
-from fastapi.responses import JSONResponse
+from fastapi import FastAPI, File, UploadFile
+from fastapi.responses import FileResponse
 import uvicorn
-import detect_board
+import cv2
+import shutil
+import os
+from detect_board import det_board
+from correct_board import cor_board
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
@@ -29,14 +34,25 @@ async def root():
 
 @app.post("/post/board")
 def _(
-    image: UploadFile = File(...),
+    upload_file: UploadFile = File(...),
 ):
-    return {"file": image}
+    path = f"files/{upload_file.filename}"
+    with open(path, "w+b") as buffer:
+        shutil.copyfileobj(upload_file.file, buffer)
+    im = cv2.imread(os.path.abspath(path))
+    x, y = det_board(im)
+    print(x)
+    print(y)
+    # cor_board(im, x, y)
+
+    return FileResponse("files/output.png")
 
 
 @app.post("/post/move")
-def _():
-    return {}
+def _(
+    upload_file: UploadFile = File(...),
+):
+    return FileResponse("files/output.png")
 
 
 @app.post("/post/result")

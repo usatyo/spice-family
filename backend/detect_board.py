@@ -1,11 +1,10 @@
 from math import atan, cos, sin
 import cv2
 import numpy as np
-from correct_board import cor_board
+# from correct_board import cor_board
 
 
 def det_board(image):
-
     neiborhood = np.array([[1, 1, 1], [1, 1, 1], [1, 1, 1]])
 
     # 白黒画像に変換
@@ -80,6 +79,7 @@ def det_board(image):
 
     ret_x = [cnrs[0][0][0], cnrs[1][0][0], cnrs[0][1][0], cnrs[1][1][0]]
     ret_y = [cnrs[0][0][1], cnrs[1][0][1], cnrs[0][1][1], cnrs[1][1][1]]
+    cv2.imwrite("images/output.jpg", image)
     return ret_x, ret_y
 
     # for i in range(2):
@@ -91,12 +91,11 @@ def det_board(image):
     #     )
 
     # print(*[degrees(i) for i in theta])
-    # cv2.imshow("line", red_line_img)
-    # # cv2.imwrite("images/output_diag_board2.jpg", red_line_img)
+    # cv2.imshow("line", image)
     # cv2.waitKey()
 
 
 # 画像の読み込み
-image = cv2.imread("images/diag_board4.jpg")
-x, y = det_board(image)
-cor_board(image, x, y)
+# image = cv2.imread("images/diag_board4.jpg")
+# x, y = det_board(image)
+# cor_board(image, x, y)
