@@ -39,24 +39,64 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
 
     return user
 
+origins = [
+    "http://localhost:3000",
+    "http://localhost",
+    # TODO: フロントエンドデプロイしたらそのURLも入れる
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 @app.get("/")
-def read_root():
-    return {"Hello": "World"}
+async def root():
+    return {"message": "this is root"}
 
 
-@app.get("/items/{item_id}")
-def read_item(item_id):
-    return {"item_id": item_id}
+@app.post("/post/board")
+def _(
+    upload_file: UploadFile = File(...),
+):
+    path = f"files/{upload_file.filename}"
+    with open(path, "w+b") as buffer:
+        shutil.copyfileobj(upload_file.file, buffer)
+    im = cv2.imread(os.path.abspath(path))
+    x, y = det_board(im)
+    print(x)
+    print(y)
+    # cor_board(im, x, y)
+
+    return FileResponse("files/output.png")
 
 
-fake_items_db = [{"item_name": "Foo"}, {"item_name": "Bar"}, {"item_name": "Baz"}]
+@app.post("/post/move")
+def _(
+    upload_file: UploadFile = File(...),
+):
+    return FileResponse("files/output.png")
 
-@app.get("/items/")
-def read_query_item(skip: int = 0, limit: int = 10):
-    return fake_items_db[skip : skip + limit]
+
+@app.post("/post/result")
+def _():
+    return {}
+
+
+@app.get("/get/rate")
+def _():
+    return {}
 
 
 @app.get("/me")
 def user_hello(current_user=Depends(get_current_user)):
     return {"msg":"Hello","user":current_user}
+
+@app.get("/get/all_rate")
+def _():
+    return {}
+

@@ -1,0 +1,104 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.pitch {
+  transform: rotateX(20deg) perspective(200px);
+}
+
+.App-header {
+  background-color: #f4f6fb;
+  min-height: 100vh;
+  display: flex;
+  font-size: calc(10px + 2vmin);
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.timer-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.timer {
+  font-family: "system-ui", "Roboto", "Helvetica Neue", sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.text {
+  color: #aaa;
+}
+
+.value {
+  font-size: 64px;
+  font-weight: 700;
+  color: #777;
+}
+
+.info {
+  max-width: 360px;
+  margin: 40px auto 0;
+  text-align: center;
+  font-size: 16px;
+}
+
+
+textPrimaryBold {
+  color: #61dafb;
+  font-weight: 700;
+  font-size: xx-large;
+}
+
+textPrimaryBigBold {
+  color: #61dafb;
+  font-weight: 700;
+  font-size: 64px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.Title1 {
+  padding: 2px;
+  text-align: left;
+  font-size: 50px;
+  font-weight: bold;
+  color: black;
+}
+
+.Title2 {
+  padding: 2px;
+  text-align: left;
+  font-size: 30px;
+  font-weight: bold;
+  color: black;
+}
+
+.normal {
+  padding: 2px;
+  text-align: left;
+  font-size: 20px;
+  color: black;
+}
