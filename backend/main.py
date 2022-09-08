@@ -8,6 +8,14 @@ from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from database import (
+    initialize,
+    update_rate,
+    get_all_pair,
+    get_all_rate,
+    get_current_rate,
+)
+from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
 from typing import Optional
@@ -38,6 +46,10 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
     user = decoded_token['firebase']['identities']
 
     return user
+
+initialize()
+app = FastAPI()
+
 
 origins = [
     "http://localhost:3000",
@@ -70,13 +82,15 @@ def _(
     x, y = det_board(im)
     print(x)
     print(y)
-    # cor_board(im, x, y)
+    cor_board(im, x, y)
 
-    return FileResponse("files/output.png")
+    return FileResponse("files/corrected.png")
 
 
 @app.post("/post/move")
 def _(
+    black: str,
+    white: str,
     upload_file: UploadFile = File(...),
 ):
     return FileResponse("files/output.png")
@@ -88,8 +102,8 @@ def _():
 
 
 @app.get("/get/rate")
-def _():
-    return {}
+def _(id: str):
+    return get_current_rate(id)
 
 
 @app.get("/me")
@@ -99,4 +113,14 @@ def user_hello(current_user=Depends(get_current_user)):
 @app.get("/get/all_rate")
 def _():
     return {}
+
+
+@app.get("/get/rate_hist")
+def _(id: str):
+    return get_all_rate(id)
+
+
+@app.get("/get/all_name")
+def _():
+    return get_all_pair()
 
