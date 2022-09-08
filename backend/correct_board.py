@@ -16,7 +16,7 @@ def cor_board(image,x,y):
     p3 = np.array([x[2], y[2]])
     p4 = np.array([x[3], y[3]])
 
-    offset = 5
+    offset = 40
     height = 20 * offset * 2
 
     src = np.float32([p1, p2, p3, p4])
@@ -38,5 +38,6 @@ def cor_board(image,x,y):
 
     # cv2.imshow("image", circle_image)
     # cv2.imshow("board_image", output)
-    cv2.imwrite("files/output.jpg", output)
+    cv2.imwrite("files/corrected.png", output)
     # cv2.waitKey()
+

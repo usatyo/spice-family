@@ -16,7 +16,7 @@ def det_board(image):
     # 線の膨張、収縮でエッジ間の隙間を消す
     dilate_image = cv2.dilate(split, neiborhood, iterations=1)
     erode_image = cv2.erode(dilate_image, neiborhood, iterations=2)
-
+    
     # 直線を検出、画像幅の10分の1以上の長さの線のみ認識
     lines = cv2.HoughLinesP(
         erode_image,
@@ -79,7 +79,9 @@ def det_board(image):
 
     ret_x = [cnrs[0][0][0], cnrs[1][0][0], cnrs[0][1][0], cnrs[1][1][0]]
     ret_y = [cnrs[0][0][1], cnrs[1][0][1], cnrs[0][1][1], cnrs[1][1][1]]
-    cv2.imwrite("images/output.jpg", image)
+    # cv2.imwrite("images/output.jpg", image)
+    # cv2.imshow("line", image)
+    # cv2.waitKey()
     return ret_x, ret_y
 
     # for i in range(2):
@@ -91,11 +93,9 @@ def det_board(image):
     #     )
 
     # print(*[degrees(i) for i in theta])
-    # cv2.imshow("line", image)
-    # cv2.waitKey()
 
 
 # 画像の読み込み
-# image = cv2.imread("images/diag_board4.jpg")
-# x, y = det_board(image)
+image = cv2.imread("images/diag_board4.jpg")
+x, y = det_board(image)
 # cor_board(image, x, y)

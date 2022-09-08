@@ -4,12 +4,15 @@ import uvicorn
 import cv2
 import shutil
 import os
+from database import initialize
+from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
 from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
 
+initialize()
 app = FastAPI()
 
 origins = [
@@ -43,9 +46,9 @@ def _(
     x, y = det_board(im)
     print(x)
     print(y)
-    # cor_board(im, x, y)
+    cor_board(im, x, y)
 
-    return FileResponse("files/output.png")
+    return FileResponse("files/corrected.png")
 
 
 @app.post("/post/move")
