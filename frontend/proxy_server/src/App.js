@@ -7,6 +7,8 @@ import Home from './pages/Home'
 import Timer from './pages/Timer'
 import Result from './pages/Result'
 import Prepare from './pages/Prepare'
+import Register from './pages/Register'
+import Login from './pages/Login'
 
 function App() {
   var primaryColor = '#59A4CB';
@@ -17,6 +19,8 @@ function App() {
         <Route path='/timer' element={<Timer />} />
         <Route path='/result' element={<Result />} />
         <Route path='/prepare' element={<Prepare />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
       </Routes>
     </BrowserRouter>
   );
