@@ -96,6 +96,6 @@ def det_board(image):
 
 
 # 画像の読み込み
-image = cv2.imread("images/diag_board4.jpg")
-x, y = det_board(image)
+# image = cv2.imread("images/diag_board4.jpg")
+# x, y = det_board(image)
 # cor_board(image, x, y)
