@@ -4,7 +4,13 @@ import uvicorn
 import cv2
 import shutil
 import os
-from database import initialize, update_rate
+from database import (
+    initialize,
+    update_rate,
+    get_all_pair,
+    get_all_rate,
+    get_current_rate,
+)
 from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
@@ -13,7 +19,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 initialize()
-update_rate(1, 1600)
 app = FastAPI()
 
 origins = [
@@ -54,6 +59,8 @@ def _(
 
 @app.post("/post/move")
 def _(
+    black: str,
+    white: str,
     upload_file: UploadFile = File(...),
 ):
     return FileResponse("files/output.png")
@@ -65,10 +72,15 @@ def _():
 
 
 @app.get("/get/rate")
-def _():
-    return {}
+def _(id: str):
+    return get_current_rate(id)
 
 
-@app.get("/get/all_rate")
+@app.get("/get/rate_hist")
+def _(id: str):
+    return get_all_rate(id)
+
+
+@app.get("/get/all_name")
 def _():
-    return {}
+    return get_all_pair()
