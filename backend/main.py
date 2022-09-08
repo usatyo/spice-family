@@ -4,7 +4,7 @@ import uvicorn
 import cv2
 import shutil
 import os
-from database import initialize
+from database import initialize, update_rate
 from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
@@ -13,6 +13,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 initialize()
+update_rate(1, 1600)
 app = FastAPI()
 
 origins = [
