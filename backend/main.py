@@ -2,23 +2,27 @@ import os
 import uvicorn
 import cv2
 import shutil
+import os
+from utility import calc_rate
 from dotenv  import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+
 from database import (
     initialize,
     update_rate,
     get_all_pair,
     get_all_rate,
     get_current_rate,
+    update_result,
+    get_all_result,
 )
 from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
-from typing import Optional
 from fastapi.middleware.cors import CORSMiddleware
 
 
@@ -97,7 +101,21 @@ def _(
 
 
 @app.post("/post/result")
-def _():
+def _(
+    black: str,
+    white: str,
+    result: int,
+):
+    update_result(black, white, result)
+    b_rate = get_current_rate(black)
+    w_rate = get_current_rate(white)
+    if result == 1:
+        b_rate, w_rate = calc_rate(b_rate, w_rate, 0)
+    elif result == -1:
+        w_rate, b_rate = calc_rate(w_rate, b_rate, 0)
+
+    update_rate(black, b_rate)
+    update_rate(white, w_rate)
     return {}
 
 
@@ -110,10 +128,6 @@ def _(id: str):
 def user_hello(current_user=Depends(get_current_user)):
     return {"msg":"Hello","user":current_user}
 
-@app.get("/get/all_rate")
-def _():
-    return {}
-
 
 @app.get("/get/rate_hist")
 def _(id: str):
@@ -124,3 +138,7 @@ def _(id: str):
 def _():
     return get_all_pair()
 
+
+@app.get("/get/result")
+def _():
+    return get_all_result()
