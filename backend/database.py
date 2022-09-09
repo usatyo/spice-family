@@ -10,6 +10,7 @@ def initialize():
     cursor.execute("DROP TABLE IF EXISTS user_info")
     cursor.execute("DROP TABLE IF EXISTS rate_hist")
     cursor.execute("DROP TABLE IF EXISTS game_result")
+    cursor.execute("DROP TABLE IF EXISTS game_record")
 
     cursor.execute(
         """CREATE TABLE user_info(
@@ -49,11 +50,11 @@ def initialize():
 
     cursor.execute(
         """CREATE TABLE game_result(
-        hist_id INT(11) AUTO_INCREMENT NOT NULL,
+        game_id INT(11) AUTO_INCREMENT NOT NULL,
         black VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
         white VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
         result INT NOT NULL,
-        PRIMARY KEY (hist_id)
+        PRIMARY KEY (game_id)
         )"""
     )
 
@@ -67,6 +68,16 @@ def initialize():
     #     """
     # )
 
+    cursor.execute(
+        """CREATE TABLE game_record(
+        record_id INT(11) AUTO_INCREMENT NOT NULL,
+        game_id INT(11) NOT NULL,
+        turn INT NOT NULL,
+        state VARCHAR(400) NOT NULL,
+        PRIMARY KEY (record_id)
+        )"""
+    )
+
     connection.commit()
     connection.close()
 
@@ -74,7 +85,7 @@ def initialize():
 def get_all_pair():
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute(f"""SELECT * FROM user_info""")
+    cursor.execute("SELECT * FROM user_info")
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -91,7 +102,10 @@ def get_current_rate(id):
 
     # TODO get latest rate
 
-    cursor.execute(f"""SELECT * FROM rate_hist WHERE user_id='{id}' LIMIT 1""")
+    cursor.execute(
+        """SELECT * FROM rate_hist WHERE user_id=%s 
+        ORDER BY id DESC LIMIT 1"""
+    , [(id)])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -105,7 +119,7 @@ def get_current_rate(id):
 def get_all_rate(id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute(f"""SELECT * FROM rate_hist WHERE user_id='{id}'""")
+    cursor.execute("SELECT * FROM rate_hist WHERE user_id=%s", [(id)])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -120,10 +134,10 @@ def update_rate(id, new_rate):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        f"""INSERT INTO rate_hist (user_id, rate, time)
-        VALUES ('{id}', '{new_rate}', '{datetime.datetime.now()}')
+        """INSERT INTO rate_hist (user_id, rate, time)
+        VALUES (%s, %s, %s)
         """
-    )
+    , [(id), (str(new_rate)), (str(datetime.datetime.now()))])
     connection.commit()
     connection.close()
     return
@@ -133,9 +147,9 @@ def update_result(black, white, result):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        f"""INSERT INTO game_result (black, white, result)
-        VALUES ('{black}', '{white}', '{result}')
-        """
+        """INSERT INTO game_result (black, white, result)
+        VALUES (%s, %s, %s)
+        """, [(black), (white), (str(result))]
     )
     connection.commit()
     connection.close()
@@ -145,7 +159,7 @@ def update_result(black, white, result):
 def get_all_result():
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute(f"""SELECT * FROM game_result""")
+    cursor.execute("SELECT * FROM game_result")
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -159,7 +173,7 @@ def get_all_result():
 def id_in_sql(id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute(f"""SELECT * FROM user_info WHERE user_id='{id}'""")
+    cursor.execute("SELECT * FROM user_info WHERE user_id=%s", [(id)])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()

@@ -11,9 +11,9 @@ def color_array(image):
     rgbImage = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     hsvImage = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
 
-    ost = 300 // BOARD + 0.5
-    x = ost // 2 + 2
-    y = ost // 2 + 2
+    ost = 800 / BOARD
+    x = ost / 2
+    y = ost / 2
     ret = [[0] * BOARD for _ in range(BOARD)]
 
     print(len(rgbImage))
@@ -26,7 +26,7 @@ def color_array(image):
             circle_image = cv2.circle(image, center, 3, (255, 0, 0), thickness=-1)
             pixel = hsvImage[centerY - 2 : centerY + 3, centerX - 2 : centerX + 3, 2]
             bright = np.mean(pixel)
-            if bright > 220:
+            if bright > 230:
                 ret[i][j] = 2
             elif bright > 100:
                 ret[i][j] = 0
