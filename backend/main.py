@@ -1,10 +1,16 @@
-from fastapi import FastAPI, File, UploadFile
-from fastapi.responses import FileResponse
+import os 
 import uvicorn
 import cv2
 import shutil
 import os
 from utility import calc_rate
+from dotenv  import load_dotenv
+import firebase_admin
+from firebase_admin import credentials, auth
+from fastapi.responses import FileResponse
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+
 from database import (
     initialize,
     update_rate,
@@ -20,8 +26,34 @@ from correct_board import cor_board
 from fastapi.middleware.cors import CORSMiddleware
 
 
+load_dotenv()
+
+# key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
+# print(key_path)
+# cred = credentials.RefreshToken(key_path)
+# default_app = firebase_admin.initialize_app(cred)
+default_app = firebase_admin.initialize_app()
+
+app = FastAPI() 
+
+
+def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+    try:
+        decoded_token = auth.verify_id_token(cred.credentials)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail='Invalid authentication credentials',
+            headers={'WWW-Authenticate': 'Bearer'},
+        )
+
+    user = decoded_token['firebase']['identities']
+
+    return user
+
 initialize()
 app = FastAPI()
+
 
 origins = [
     "http://localhost:3000",
@@ -92,7 +124,12 @@ def _(id: str):
     return get_current_rate(id)
 
 
-@app.get("/get/all_rate")
+@app.get("/me")
+def user_hello(current_user=Depends(get_current_user)):
+    return {"msg":"Hello","user":current_user}
+
+
+@app.get("/get/rate_hist")
 def _(id: str):
     return get_all_rate(id)
 
