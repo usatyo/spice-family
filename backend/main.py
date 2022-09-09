@@ -21,7 +21,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 
 initialize()
-update_rate("aaa", 1234)
 app = FastAPI()
 
 origins = [
