@@ -10,7 +10,6 @@ from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
-
 from database import (
     initialize,
     update_rate,
@@ -19,6 +18,7 @@ from database import (
     get_current_rate,
     update_result,
     get_all_result,
+    id_in_sql,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -34,6 +34,8 @@ load_dotenv()
 # default_app = firebase_admin.initialize_app(cred)
 default_app = firebase_admin.initialize_app()
 
+
+initialize()
 app = FastAPI() 
 
 
@@ -51,9 +53,6 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
 
     return user
 
-initialize()
-app = FastAPI()
-
 
 origins = [
     "http://localhost:3000",
@@ -70,16 +69,11 @@ app.add_middleware(
 )
 
 
-@app.get("/")
-async def root():
-    return {"message": "this is root"}
-
-
 @app.post("/post/board")
 def _(
     upload_file: UploadFile = File(...),
 ):
-    path = f"files/{upload_file.filename}"
+    path = "files/given.jpg"
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath(path))
@@ -88,7 +82,7 @@ def _(
     print(y)
     cor_board(im, x, y)
 
-    return FileResponse("files/corrected.png")
+    return FileResponse("files/corrected.jpg")
 
 
 @app.post("/post/move")
@@ -97,7 +91,14 @@ def _(
     white: str,
     upload_file: UploadFile = File(...),
 ):
-    return FileResponse("files/output.png")
+    if not id_in_sql(black) or not id_in_sql(white):
+        return {"error": "non-exist user_id"}
+    path = "files/given.jpg"
+    with open(path, "w+b") as buffer:
+        shutil.copyfileobj(upload_file.file, buffer)
+    im = cv2.imread(os.path.abspath("files/given.jpg"))
+    color_array(im)
+    return FileResponse("files/output.jpg")
 
 
 @app.post("/post/result")
@@ -106,9 +107,13 @@ def _(
     white: str,
     result: int,
 ):
+    if not id_in_sql(black) or not id_in_sql(white):
+        return {"error": "invalid user_id"}
+    if result < -1 or 1 < result:
+        return {"error": "invalid result"}
     update_result(black, white, result)
-    b_rate = get_current_rate(black)
-    w_rate = get_current_rate(white)
+    b_rate = get_current_rate(black)[0]["rate"]
+    w_rate = get_current_rate(white)[0]["rate"]
     if result == 1:
         b_rate, w_rate = calc_rate(b_rate, w_rate, 0)
     elif result == -1:
@@ -121,6 +126,8 @@ def _(
 
 @app.get("/get/rate")
 def _(id: str):
+    if not id_in_sql(id):
+        return {"error": "invalid user_id"}
     return get_current_rate(id)
 
 
@@ -131,6 +138,8 @@ def user_hello(current_user=Depends(get_current_user)):
 
 @app.get("/get/rate_hist")
 def _(id: str):
+    if not id_in_sql(id):
+        return {"error": "invalid user_id"}
     return get_all_rate(id)
 
 
