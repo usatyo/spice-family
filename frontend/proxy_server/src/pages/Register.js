@@ -1,7 +1,17 @@
 import React, { useState, useEffect } from "react";
+import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
+import { Box, Button, Stack, HStack, Flex, Text, Center, Input } from "@chakra-ui/react";
+import {
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+} from '@chakra-ui/react'
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth } from "../Firebase";
+import { auth, user } from "../Firebase";
 import { Navigate, Link } from "react-router-dom";
+import './../App.css';
+
 
 const Register = () => {
     const [registerEmail, setRegisterEmail] = useState("");
@@ -35,29 +45,37 @@ const Register = () => {
                 <Navigate to={`/`} />
             ) : (
                 <>
-                    <h1>新規登録</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label>メールアドレス</label>
-                            <input
-                                name="email"
-                                type="email"
-                                value={registerEmail}
-                                onChange={(e) => setRegisterEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label>パスワード</label>
-                            <input
-                                name="password"
-                                type="password"
-                                value={registerPassword}
-                                onChange={(e) => setRegisterPassword(e.target.value)}
-                            />
-                        </div>
-                        <button>登録する</button>
-                        <p>ログインは<Link to={`/login/`}>こちら</Link></p>
-                    </form>
+                    <Box className="App" bg={'#e9e9e9'}>
+                        <Stack h='full' w='full'>
+                            <Center>
+                                <Box w={450} bg={"white"} p={8}>
+                                    <Text fontSize={25} mb={10}>新規登録</Text>
+                                    <Spacer></Spacer>
+                                    <FormControl onSubmit={handleSubmit} mb={6}>
+                                            <FormLabel>メールアドレス</FormLabel>
+                                            <Input
+                                                name="email"
+                                                type="email"
+                                                value={registerEmail}
+                                                onChange={(e) => setRegisterEmail(e.target.value)}
+                                            />
+                                    </FormControl>
+                                    <FormControl>
+                                            <FormLabel>パスワード</FormLabel>
+                                            <Input
+                                                name="password"
+                                                type="password"
+                                                value={registerPassword}
+                                                onChange={(e) => setRegisterPassword(e.target.value)}
+                                            />
+                                    </FormControl>
+                                        <Button w={40} mt={10} mb={10}>登録する</Button>
+                                        <Spacer></Spacer>
+                                </Box>
+                            </Center>
+                            <Text>ログインは<Link to={`/login/`}>こちら</Link></Text>
+                        </Stack>
+                    </Box>
                 </>
             )}
         </>
