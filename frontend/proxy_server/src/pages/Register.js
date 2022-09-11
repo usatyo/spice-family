@@ -31,7 +31,7 @@ const Register = () => {
         }
     };
 
-    const [user, setUser] = useState("");
+    const [user_state, setUser] = useState(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
@@ -39,9 +39,16 @@ const Register = () => {
         });
     }, []);
 
+    if (user_state !== null) {
+        localStorage.setItem('token', user_state.accessToken)
+        localStorage.setItem('refresh_token', user_state.refreshToken)
+        let tkn = localStorage.getItem('token')
+        console.log(tkn)
+    }
+
     return (
         <>
-            {user ? (
+            {user_state ? (
                 <Navigate to={`/`} />
             ) : (
                 <>
@@ -52,25 +59,25 @@ const Register = () => {
                                     <Text fontSize={25} mb={10}>新規登録</Text>
                                     <Spacer></Spacer>
                                     <FormControl onSubmit={handleSubmit} mb={6}>
-                                            <FormLabel>メールアドレス</FormLabel>
-                                            <Input
-                                                name="email"
-                                                type="email"
-                                                value={registerEmail}
-                                                onChange={(e) => setRegisterEmail(e.target.value)}
-                                            />
+                                        <FormLabel>メールアドレス</FormLabel>
+                                        <Input
+                                            name="email"
+                                            type="email"
+                                            value={registerEmail}
+                                            onChange={(e) => setRegisterEmail(e.target.value)}
+                                        />
                                     </FormControl>
                                     <FormControl>
-                                            <FormLabel>パスワード</FormLabel>
-                                            <Input
-                                                name="password"
-                                                type="password"
-                                                value={registerPassword}
-                                                onChange={(e) => setRegisterPassword(e.target.value)}
-                                            />
+                                        <FormLabel>パスワード</FormLabel>
+                                        <Input
+                                            name="password"
+                                            type="password"
+                                            value={registerPassword}
+                                            onChange={(e) => setRegisterPassword(e.target.value)}
+                                        />
                                     </FormControl>
-                                        <Button w={40} mt={10} mb={10}>登録する</Button>
-                                        <Spacer></Spacer>
+                                    <Button w={40} mt={10} mb={10}>登録する</Button>
+                                    <Spacer></Spacer>
                                 </Box>
                             </Center>
                             <Text>ログインは<Link to={`/login/`}>こちら</Link></Text>

@@ -9,6 +9,7 @@ import Result from './pages/Result'
 import Prepare from './pages/Prepare'
 import Register from './pages/Register'
 import Login from './pages/Login'
+import History from './pages/History'
 
 function App() {
   var primaryColor = '#59A4CB';
@@ -21,6 +22,7 @@ function App() {
         <Route path='/prepare' element={<Prepare />} />
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
+        <Route path='/history' element={<History />} />
       </Routes>
     </BrowserRouter>
   );

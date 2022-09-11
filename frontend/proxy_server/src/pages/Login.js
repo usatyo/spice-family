@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
+import { Box, Button, Stack, HStack, Flex, Text, Center } from "@chakra-ui/react";
 import {
     signInWithEmailAndPassword,
     onAuthStateChanged
@@ -24,7 +26,7 @@ const Login = () => {
         }
     };
 
-    const [user, setUser] = useState();
+    const [user_state, setUser] = useState(null);
 
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
@@ -32,10 +34,19 @@ const Login = () => {
         });
     });
 
+    console.log(user_state)
+    
+    if (user_state !== null) {
+        localStorage.setItem('token', user_state.accessToken)
+        localStorage.setItem('refresh_token', user_state.refreshToken)
+        let tkn = localStorage.getItem('token')
+        console.log(tkn)
+    }
+
     return (
         <>
             {/* ↓ログインしている場合、マイページにリダイレクトする設定 */}
-            {user ? (
+            {user_state ? (
                 <Navigate to={`/`} />
             ) : (
                 <>

@@ -3,6 +3,7 @@ import { AspectRatio, ChakraProvider, Spacer, VStack, Box, Button, Stack, HStack
 import { Link, useNavigate, Navigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../Firebase.js";
+import { sendToken } from "../utils/api"
 import MyChart from '../components/MyChart'
 import TimerSvg from '../assets/timer.svg'
 
@@ -41,6 +42,10 @@ const Home = () => {
                                             <Link to='/prepare'>
                                                 <Button p={4} bg={"white"} shadow="lg" rounded="20px" w="120px" h="120px">
                                                     <Image src={TimerSvg} h={75} />
+                                                </Button>
+                                            </Link>
+                                            <Link to='/history'>
+                                                <Button bg={"white"} onClick={sendToken}>
                                                 </Button>
                                             </Link>
                                             <Box pl={270} pr={230} color={'#59A4CB'} fontSize="7xl" fontWeight="bold" >プロ棋士サーバ</Box>
