@@ -32,12 +32,11 @@ def cor_board(image,x,y):
     M = cv2.getPerspectiveTransform(src, dst)
     output = cv2.warpPerspective(image, M, (height, height))
 
-    for i in range(4):
-        circle_image = cv2.circle(image, (x[i], y[i]), 10, (255, 0, 0), thickness=-1)
-
+    # for i in range(4):
+    #     circle_image = cv2.circle(image, (x[i], y[i]), 10, (255, 0, 0), thickness=-1)
 
     # cv2.imshow("image", circle_image)
     # cv2.imshow("board_image", output)
-    cv2.imwrite("files/corrected.png", output)
+    cv2.imwrite("files/corrected.jpg", output)
     # cv2.waitKey()
 
