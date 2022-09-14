@@ -9,22 +9,22 @@ import TimerSvg from '../assets/timer.svg'
 
 
 const Home = () => {
-
+    
     const [user, setUser] = useState("");
     const [loading, setLoading] = useState(true);
-
+        
     useEffect(() => {
         onAuthStateChanged(auth, (currentUser) => {
             setUser(currentUser);
             setLoading(false);
         });
     }, []);
-
+    
     const navigate = useNavigate();
-
+    
     const logout = async () => {
         await signOut(auth);
-        navigate("/login/");
+        navigate("/login");
     }
 
     return (
@@ -67,4 +67,4 @@ const Home = () => {
     );
 }
 
-export default Home
+export default Home 

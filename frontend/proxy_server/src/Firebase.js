@@ -15,4 +15,4 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const user = auth.currentUser;
 
-export {auth, user};
+export { auth, user };

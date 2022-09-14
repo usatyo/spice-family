@@ -35,10 +35,13 @@ const Login = () => {
     });
 
     console.log(user_state)
-    
+
     if (user_state !== null) {
         localStorage.setItem('token', user_state.accessToken)
         localStorage.setItem('refresh_token', user_state.refreshToken)
+        const time = Date()
+        console.log(time)
+        localStorage.setItem('refresh_at', time)
         let tkn = localStorage.getItem('token')
         console.log(tkn)
     }
