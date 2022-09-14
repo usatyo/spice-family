@@ -10,6 +10,9 @@ from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fb_setting import (
+    get_current_user
+)
 from database import (
     initialize,
     update_rate,
@@ -28,10 +31,6 @@ from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 
-# key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-# print(key_path)
-# cred = credentials.RefreshToken(key_path)
-# default_app = firebase_admin.initialize_app(cred)
 default_app = firebase_admin.initialize_app()
 
 
@@ -39,19 +38,6 @@ initialize()
 app = FastAPI() 
 
 
-def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
-    try:
-        decoded_token = auth.verify_id_token(cred.credentials)
-    except:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid authentication credentials',
-            headers={'WWW-Authenticate': 'Bearer'},
-        )
-
-    user = decoded_token['firebase']['identities']
-
-    return user
 
 
 origins = [
@@ -67,6 +53,19 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.get("/")
+async def root():
+    return {"message": "this is root"}
+
+
+#firebaseからuidを取ってきたいときの実装
+@app.get("/sample")
+async def id(token_test = Depends(get_current_user)):
+    uid = token_test["uid"]
+    return [uid]
+
 
 
 @app.post("/post/board")
