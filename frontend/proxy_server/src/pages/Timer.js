@@ -114,6 +114,7 @@ const Timer = () => {
   const [isPause, setIsPause] = useState(false);
   const { isOpen: isOpenEnd, onOpen: onOpenEnd, onClose: onCloseEnd } = useDisclosure();
   const { isOpen: isOpenTimeUp, onOpen: onOpenTimeUp, onClose: onCloseTimeUp } = useDisclosure();
+
   const [kouryoLeft, setKouryoLeft] = useState(kouryokaisuu);
   const [kouryoRight, setKouryoRight] = useState(kouryokaisuu);
   const [byoyomiStateLeft, setByoyomiStateLeft] = useState(0);//0:通常 1:秒読み 
@@ -132,10 +133,10 @@ const Timer = () => {
     }
   }, [webcamRef]);
   const classes = useStyles();
-
   return (
     <div className="App">
       <header className="App-header">
+
         <Stack h="full" w="full">
           <Box paddingLeft="40px" w="full">
             <Text className='Title1' >Timer</Text>
@@ -210,7 +211,7 @@ const Timer = () => {
                         </CountdownCircleTimer>
                       }
                     })()}
-                    {endModalTimeUp(isOpenTimeUp, onCloseTimeUp, playState)}
+                    {endTimeUpModal(isOpenTimeUp, onCloseTimeUp, playState)}
                   </Box>
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
@@ -248,6 +249,7 @@ const Timer = () => {
                     <HStack marginTop={4}>
                       <Button colorScheme="blue" border="2px" variant="outline" w="50%" h="70px" borderRadius={25} onClick={() => { setIsPause(!isPause) }}>
                         <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">{(isPause ? "再開" : "一時停止")}</Text>
+
                       </Button>
                       <Button colorScheme="blue" variant="solid" w="80%" h="70px" borderRadius={25} onClick={onOpenEnd}>
                         <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
@@ -301,7 +303,7 @@ const Timer = () => {
                           colors={(playState == "right" && isPause == false) ? ["#5a97db", "#5a97db", "#f4d849", "#A30000"] : ["#777777", "#777777", "#777777", "#777777"]}
                           colorsTime={[3600, 600, 300, 0]}
                           onComplete={(kouryoRight <= 1) ? onOpenTimeUp : () => {
-                            setKouryoLeft(kouryoRight - 1);
+                            setKouryoRight(kouryoRight - 1);
                             return { shouldRepeat: true, delay: 1, newInitialRemainingTime: byoyomi };
                           }}
                         >
@@ -309,7 +311,7 @@ const Timer = () => {
                         </CountdownCircleTimer>
                       }
                     })()}
-                    {endModalTimeUp(isOpenTimeUp, onCloseTimeUp, playState)}
+                    {endTimeUpModal(isOpenTimeUp, onCloseTimeUp, playState)}
                   </Box>
                   <Box marginStart={10}>
                     <Text as="span" fontSize={20} color="blue.500" fontWeight="bold">秒読み </Text>
@@ -344,6 +346,8 @@ const Timer = () => {
 
 export default Timer
 
+
+
 function endModal(isOpen, onClose, playState) {
   return <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
@@ -365,7 +369,9 @@ function endModal(isOpen, onClose, playState) {
   </Modal>;
 }
 
-function endModalTimeUp(isOpen, onClose, playState) {//閉じれないようにする
+
+
+function endTimeUpModal(isOpen, onClose, playState) {//閉じれないようにする
   return <Modal isOpen={isOpen} onClose={null}>
     <ModalOverlay />
     <ModalContent>
