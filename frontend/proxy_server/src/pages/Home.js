@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, Stack, HStack, Flex, Text, Center, Image } from "@chakra-ui/react";
 import { Link } from 'react-router-dom';
-import MyChart from '../components/MyChart'
+import MyChart from '../components/myChart'
 import TimerSvg from '../assets/timer.svg'
 
 
@@ -26,7 +26,7 @@ const Home = () => {
                     </Stack>
                 </VStack>
             </header>
-        </div >
+        </div>
     )
 }
 
