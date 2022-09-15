@@ -1,10 +1,10 @@
-import os 
+import os
 import uvicorn
 import cv2
 import shutil
 import os
 from utility import calc_rate
-from dotenv  import load_dotenv
+from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
@@ -20,6 +20,8 @@ from database import (
     get_all_result,
     id_in_sql,
     update_record,
+    get_record,
+    new_game,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -37,7 +39,7 @@ default_app = firebase_admin.initialize_app()
 
 
 initialize()
-app = FastAPI() 
+app = FastAPI()
 
 
 def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
@@ -46,11 +48,11 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
     except:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid authentication credentials',
-            headers={'WWW-Authenticate': 'Bearer'},
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = decoded_token['firebase']['identities']
+    user = decoded_token["firebase"]["identities"]
 
     return user
 
@@ -90,6 +92,7 @@ def _(
 def _(
     black: str,
     white: str,
+    game_id: int,
     upload_file: UploadFile = File(...),
 ):
     if not id_in_sql(black) or not id_in_sql(white):
@@ -99,7 +102,7 @@ def _(
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath("files/given.jpg"))
     rec = color_array(im)
-    # update_record(rec)
+    update_record(game_id, rec)
     return FileResponse("files/output.jpg")
 
 
@@ -126,6 +129,15 @@ def _(
     return {}
 
 
+@app.post("/post/start_game")
+def _(
+    black: str,
+    white: str,
+):
+    game_id = new_game(black, white)
+    return {"game_id": game_id}
+
+
 @app.get("/get/rate")
 def _(id: str):
     if not id_in_sql(id):
@@ -135,7 +147,7 @@ def _(id: str):
 
 @app.get("/me")
 def user_hello(current_user=Depends(get_current_user)):
-    return {"msg":"Hello","user":current_user}
+    return {"msg": "Hello", "user": current_user}
 
 
 @app.get("/get/rate_hist")
@@ -151,5 +163,10 @@ def _():
 
 
 @app.get("/get/result")
-def _():
-    return get_all_result()
+def _(id: str):
+    return get_all_result(id)
+
+
+@app.get("/get/game_record")
+def _(game_id: int):
+    get_record(game_id)

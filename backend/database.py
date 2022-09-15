@@ -11,7 +11,7 @@ def initialize():
     cursor.execute("DROP TABLE IF EXISTS user_info")
     cursor.execute("DROP TABLE IF EXISTS rate_hist")
     cursor.execute("DROP TABLE IF EXISTS game_result")
-    cursor.execute("DROP TABLE IF EXISTS game_record")
+    cursor.execute("DROP TABLE IF EXISTS game_record_store")
 
     cursor.execute(
         """CREATE TABLE user_info(
@@ -55,22 +55,23 @@ def initialize():
         black VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
         white VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
         result INT NOT NULL,
+        time TIMESTAMP NOT NULL,
         PRIMARY KEY (game_id)
         )"""
     )
 
     # テスト用
-    # cursor.execute(
-    #     """INSERT INTO game_result (black, white, result)
-    #     VALUES ('jfalrj', 'enrqjw', '-1'),
-    #     ('jfalrj', 'enrqjw', '0'),
-    #     ('jfalrj', 'enrqjw', '1'),
-    #     ('jfalrj', 'enrqjw', '-1')
-    #     """
-    # )
+    cursor.execute(
+        """INSERT INTO game_result (black, white, result, time)
+        VALUES ('aaa', 'bbb', '-1', '2020-01-19 05:14:07'),
+        ('aaa', 'ccc', '0', '2020-01-19 05:14:07'),
+        ('bbb', 'ccc', '1', '2020-01-19 05:14:07'),
+        ('aaa', 'bbb', '-1', '2020-01-19 05:14:07')
+        """
+    )
 
     cursor.execute(
-        """CREATE TABLE game_record(
+        """CREATE TABLE game_record_store(
         record_id INT(11) AUTO_INCREMENT NOT NULL,
         game_id INT(11) NOT NULL,
         turn INT NOT NULL,
@@ -105,8 +106,9 @@ def get_current_rate(id):
 
     cursor.execute(
         """SELECT * FROM rate_hist WHERE user_id=%s 
-        ORDER BY id DESC LIMIT 1"""
-    , [(id)])
+        ORDER BY id DESC LIMIT 1""",
+        [(id)],
+    )
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -137,8 +139,9 @@ def update_rate(id, new_rate):
     cursor.execute(
         """INSERT INTO rate_hist (user_id, rate, time)
         VALUES (%s, %s, %s)
-        """
-    , [(id), (str(new_rate)), (str(datetime.datetime.now()))])
+        """,
+        [(id), (str(new_rate)), (str(datetime.datetime.now()))],
+    )
     connection.commit()
     connection.close()
     return
@@ -148,26 +151,29 @@ def update_result(black, white, result):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        """INSERT INTO game_result (black, white, result)
-        VALUES (%s, %s, %s)
-        """, [(black), (white), (str(result))]
+        """INSERT INTO game_result (black, white, result ,time)
+        VALUES (%s, %s, %s, %s)
+        """,
+        [(black), (white), (str(result)), (str(datetime.datetime.now()))],
     )
     connection.commit()
     connection.close()
     return
 
 
-def get_all_result():
+def get_all_result(id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM game_result")
+    cursor.execute("SELECT * FROM game_result WHERE black=%s OR white=%s", [(id), (id)])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
 
     ret = []
     for info in datas:
-        ret.append({"black": info[1], "white": info[2], "result": info[3]})
+        ret.append(
+            {"black": info[1], "white": info[2], "result": info[3], "time": info[4]}
+        )
     return ret
 
 
@@ -183,18 +189,25 @@ def id_in_sql(id):
     return ret
 
 
-def update_record(game_id, turn, rec):
+def update_record(game_id, rec):
     data = ""
     for i in range(BOARD):
         for j in range(BOARD):
-            data = data + rec[i][j]
+            data = data + str(rec[i][j])
 
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        """INSERT INTO game_record (game_id, turn, state)
+        """SELECT turn FROM game_record_store WHERE game_id=%s 
+        ORDER BY turn DESC LIMIT 1""",
+        [(game_id)],
+    )
+    turn = int(cursor.fetchall()[0][0]) + 1
+    cursor.execute(
+        """INSERT INTO game_record_store (game_id, turn, state)
         VALUES (%s, %s, %s)
-        """, [(game_id), (turn), (data)]
+        """,
+        [(str(game_id)), (str(turn)), (data)],
     )
     connection.commit()
     connection.close()
@@ -204,7 +217,7 @@ def update_record(game_id, turn, rec):
 def get_record(game_id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM game_record WHERE game_id=%s", [(game_id)])
+    cursor.execute("SELECT * FROM game_record WHERE game_id=%s", [(str(game_id))])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -218,3 +231,29 @@ def get_record(game_id):
         states.append(state)
 
     return states
+
+
+def new_game(black, white):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute(
+        """INSERT INTO game_result (black, white, result, time)
+        VALUES (%s, %s, %s, %s)
+        """,
+        [(black), (white), ("0"), (str(datetime.datetime.now()))],
+    )
+    cursor.execute(
+        """SELECT game_id from game_result 
+        ORDER BY game_id DESC LIMIT 1
+        """
+    )
+    game_id = cursor.fetchall()[0][0]
+    cursor.execute(
+        """INSERT INTO game_record_store (game_id, turn, state)
+        VALUES (%s, %s, %s)
+        """,
+        [(game_id), ("0"), ("0" * (BOARD ** 2))],
+    )
+    connection.commit()
+    connection.close()
+    return game_id
