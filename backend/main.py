@@ -88,15 +88,22 @@ def _(
     return FileResponse("files/corrected.jpg")
 
 
-@app.post("/post/move")
+@app.post("/post/start_game")
 def _(
     black: str,
     white: str,
-    game_id: int,
-    upload_file: UploadFile = File(...),
 ):
     if not id_in_sql(black) or not id_in_sql(white):
         return {"error": "non-exist user_id"}
+    game_id = new_game(black, white)
+    return {"game_id": game_id}
+
+
+@app.post("/post/move")
+def _(
+    game_id: int,
+    upload_file: UploadFile = File(...),
+):
     path = "files/given.jpg"
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
@@ -108,15 +115,12 @@ def _(
 
 @app.post("/post/result")
 def _(
-    black: str,
-    white: str,
+    game_id: int,
     result: int,
 ):
-    if not id_in_sql(black) or not id_in_sql(white):
-        return {"error": "invalid user_id"}
     if result < -1 or 1 < result:
         return {"error": "invalid result"}
-    update_result(black, white, result)
+    black, white = update_result(game_id, result)
     b_rate = get_current_rate(black)[0]["rate"]
     w_rate = get_current_rate(white)[0]["rate"]
     if result == 1:
@@ -127,15 +131,6 @@ def _(
     update_rate(black, b_rate)
     update_rate(white, w_rate)
     return {}
-
-
-@app.post("/post/start_game")
-def _(
-    black: str,
-    white: str,
-):
-    game_id = new_game(black, white)
-    return {"game_id": game_id}
 
 
 @app.get("/get/rate")

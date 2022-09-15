@@ -147,18 +147,19 @@ def update_rate(id, new_rate):
     return
 
 
-def update_result(black, white, result):
+def update_result(game_id, result):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        """INSERT INTO game_result (black, white, result ,time)
-        VALUES (%s, %s, %s, %s)
+        """UPDATE game_result SET result=%s
+        WHERE game_id=%s
         """,
-        [(black), (white), (str(result)), (str(datetime.datetime.now()))],
+        [(result), (game_id)],
     )
     connection.commit()
     connection.close()
-    return
+    black, white = get_black_white(game_id)
+    return black, white
 
 
 def get_all_result(id):
@@ -217,7 +218,7 @@ def update_record(game_id, rec):
 def get_record(game_id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-    cursor.execute("SELECT * FROM game_record WHERE game_id=%s", [(str(game_id))])
+    cursor.execute("SELECT * FROM game_record_store WHERE game_id=%s", [(str(game_id))])
     datas = cursor.fetchall()
     connection.commit()
     connection.close()
@@ -257,3 +258,14 @@ def new_game(black, white):
     connection.commit()
     connection.close()
     return game_id
+
+
+def get_black_white(game_id):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute("SELECT black, white FROM game_result WHERE game_id=%s", [(str(game_id))])
+    datas = cursor.fetchall()[0]
+    black, white = datas[0], datas[1]
+    connection.commit()
+    connection.close()
+    return black, white
