@@ -1,6 +1,7 @@
 import MySQLdb
 import datetime
 
+BOARD = 19
 PALAMS = {"host": "localhost", "user": "root", "passwd": "root", "db": "python_db"}
 
 
@@ -180,3 +181,40 @@ def id_in_sql(id):
 
     ret = len(datas) > 0
     return ret
+
+
+def update_record(game_id, turn, rec):
+    data = ""
+    for i in range(BOARD):
+        for j in range(BOARD):
+            data = data + rec[i][j]
+
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute(
+        """INSERT INTO game_record (game_id, turn, state)
+        VALUES (%s, %s, %s)
+        """, [(game_id), (turn), (data)]
+    )
+    connection.commit()
+    connection.close()
+    return
+
+
+def get_record(game_id):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM game_record WHERE game_id=%s", [(game_id)])
+    datas = cursor.fetchall()
+    connection.commit()
+    connection.close()
+
+    states = []
+    for data in datas:
+        state = [[0] * BOARD for _ in range(BOARD)]
+        for i in range(BOARD):
+            for j in range(BOARD):
+                state[i][j] = data[i * BOARD + j]
+        states.append(state)
+
+    return states

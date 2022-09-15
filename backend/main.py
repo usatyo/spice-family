@@ -19,6 +19,7 @@ from database import (
     update_result,
     get_all_result,
     id_in_sql,
+    update_record,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -97,7 +98,8 @@ def _(
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath("files/given.jpg"))
-    color_array(im)
+    rec = color_array(im)
+    # update_record(rec)
     return FileResponse("files/output.jpg")
 
 
