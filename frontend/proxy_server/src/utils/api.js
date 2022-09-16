@@ -1,4 +1,19 @@
-export const response = {
+import axios from 'axios';
+
+const baseUrl = ""
+
+export const getRate = async () => {
+    try {
+        const rate_list = await axios.get(baseUrl)
+        return rate_list
+    } catch (error) {
+        alert(error.toString())
+    }
+}
+
+// backendからaxiosできるようになったら下のrateListを消す
+// それからhome.jsのrateListをgetRateに書き換える
+export const rateList = {
     "2022/8/17": 560, 
     "2022/8/18": 720, 
     "2022/8/19": 1060, 

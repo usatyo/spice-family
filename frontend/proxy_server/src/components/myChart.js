@@ -1,6 +1,6 @@
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from "chart.js"
-import { response } from '../utils/api'
+import { rateList } from '../utils/api'
 
 Chart.register(...registerables)
 
@@ -9,7 +9,7 @@ const MyChart = () => {
   let begin = new Date()
   let end = new Date();
 
-  begin.setDate(begin.getDate() - 30);
+  begin.setDate(begin.getDate() - 29);
   begin.setHours(0, 0, 0, 0);
 
   const labels = []
@@ -19,7 +19,7 @@ const MyChart = () => {
     labels.push(formatedDate);
   }
 
-  const data = Object.values(response)
+  const data = Object.values(rateList).slice(-30)
 
     const graphData = {
       labels: labels,
