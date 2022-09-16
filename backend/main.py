@@ -1,8 +1,10 @@
 import os
+from pydantic import BaseModel
 import uvicorn
 import cv2
 import shutil
 import os
+import base64
 from utility import gen_boardimg
 from utility import calc_rate
 from dotenv import load_dotenv
@@ -11,9 +13,7 @@ from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
-from fb_setting import (
-    get_current_user
-)
+from fb_setting import get_current_user
 from database import (
     initialize,
     update_rate,
@@ -35,6 +35,10 @@ from decide_color import color_array
 from detect_board import det_board
 from correct_board import cor_board
 from fastapi.middleware.cors import CORSMiddleware
+
+
+class Item(BaseModel):
+    src: str
 
 
 load_dotenv()
@@ -81,9 +85,9 @@ async def root():
     return {"message": "this is root"}
 
 
-#firebaseからuidを取ってきたいときの実装
+# firebaseからuidを取ってきたいときの実装
 @app.get("/sample")
-async def id(token_test = Depends(get_current_user)):
+async def id(token_test=Depends(get_current_user)):
     uid = token_test["uid"]
     return [uid]
 
@@ -94,7 +98,7 @@ def _(
     name: str,
 ):
     if id_in_sql(user_id) or not user_id:
-        return { "error": "Invalid id"}
+        return {"error": "Invalid id"}
     if name_in_sql(name) or not name:
         return {"error": "exist same name"}
     register_user(user_id, name)
@@ -136,6 +140,25 @@ def _(
     path = "files/given.jpg"
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
+    im = cv2.imread(os.path.abspath("files/given.jpg"))
+    x, y = get_corner(game_id)
+    cor_board(im, x, y)
+    im = cv2.imread(os.path.abspath("files/corrected.jpg"))
+    rec = color_array(im)
+    update_record(game_id, rec)
+    return FileResponse("files/output.jpg")
+
+
+@app.post("/post/move/base64")
+def _(
+    game_id: int,
+    img: Item,
+):
+    decoded_img = base64.b64decode(img.src)
+    path = "files/given.jpg"
+    f = open(path, "wb")
+    f.write(decoded_img)
+    f.close()
     im = cv2.imread(os.path.abspath("files/given.jpg"))
     x, y = get_corner(game_id)
     cor_board(im, x, y)
