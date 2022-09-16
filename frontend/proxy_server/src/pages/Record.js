@@ -1,15 +1,7 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@chakra-ui/icons"
 import { Box, Button, HStack, Image, Text, VStack } from "@chakra-ui/react"
 import boardImg from "../assets/ban.png"
-import { getAllRate, getRateFromId, getResult, postNameAndId, postNewGame, postResult } from "../utils/utils"
 
-
-postNewGame("aaa", "bbb")
-postResult(1, 1)
-postNameAndId("ppp", "qqq")
-console.log(getAllRate("aaa"))
-console.log(getRateFromId("aaa"))
-console.log(getResult("aaa"))
 
 const Record = () => {
   return (<>

@@ -162,7 +162,7 @@ def _(
 
     update_rate(black, b_rate)
     update_rate(white, w_rate)
-    return {}
+    return
 
 
 @app.get("/get/rate")
