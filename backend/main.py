@@ -3,6 +3,7 @@ import uvicorn
 import cv2
 import shutil
 import os
+from utility import gen_boardimg
 from utility import calc_rate
 from dotenv import load_dotenv
 import firebase_admin
@@ -25,6 +26,8 @@ from database import (
     update_record,
     get_record,
     new_game,
+    register_corner,
+    get_corner,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -86,6 +89,7 @@ async def id(token_test = Depends(get_current_user)):
 
 @app.post("/post/board")
 def _(
+    game_id: int,
     upload_file: UploadFile = File(...),
 ):
     path = "files/given.jpg"
@@ -93,8 +97,7 @@ def _(
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath(path))
     x, y = det_board(im)
-    print(x)
-    print(y)
+    register_corner(game_id, x, y)
     cor_board(im, x, y)
 
     return FileResponse("files/corrected.jpg")
@@ -120,6 +123,9 @@ def _(
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath("files/given.jpg"))
+    x, y = get_corner(game_id)
+    cor_board(im, x, y)
+    im = cv2.imread(os.path.abspath("files/corrected.jpg"))
     rec = color_array(im)
     update_record(game_id, rec)
     return FileResponse("files/output.jpg")
@@ -175,5 +181,12 @@ def _(id: str):
 
 
 @app.get("/get/game_record")
-def _(game_id: int):
-    get_record(game_id)
+def _(
+    game_id: int,
+    turn: int,
+):
+    state = get_record(game_id, turn)
+    if state == -1:
+        return {"error": "Invalid game_id or invalid turn"}
+    gen_boardimg(state)
+    return FileResponse("files/output.jpg")
