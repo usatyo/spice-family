@@ -60,3 +60,14 @@ export const getResult = async (user_id) => {
     console.log("err:", err)
   }
 }
+
+export const getRecordPath = async (game_id, turn) => {
+  try {
+    const res = await axios.get(baseUrl + `/get/game_record?game_id=${game_id}&turn=${turn}`, { responseType: 'arraybuffer' })
+    const blob = new Blob([res.data], { type: 'image/png' })
+    const url = window.URL || window.webkitURL
+    return url.createObjectURL(blob)
+  } catch (err) {
+    console.log("err:", err)
+  }
+}
