@@ -191,6 +191,18 @@ def id_in_sql(id):
     return ret
 
 
+def name_in_sql(name):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute("SELECT * FROM user_info WHERE name=%s", [(name)])
+    datas = cursor.fetchall()
+    connection.commit()
+    connection.close()
+
+    ret = len(datas) > 0
+    return ret
+
+
 def update_record(game_id, rec):
     data = ""
     for i in range(BOARD):
@@ -312,3 +324,29 @@ def get_corner(game_id):
     x = xy[:4]
     y = xy[4:]
     return x, y
+
+
+def register_user(id, name):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute(
+        """INSERT INTO user_info (user_id, name)
+        VALUES (%s, %s)
+        """, [(id), (name)],
+    )
+    connection.commit()
+    connection.close()
+    return
+
+
+def get_name(id):
+    connection = MySQLdb.connect(**PALAMS)
+    cursor = connection.cursor()
+    cursor.execute(
+        """SELECT name FROM user_info WHERE user_id=%s
+        """, [(id)]
+    )
+    name = cursor.fetchall()[0][0]
+    connection.commit()
+    connection.close()
+    return name

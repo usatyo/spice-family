@@ -28,6 +28,8 @@ from database import (
     new_game,
     register_corner,
     get_corner,
+    register_user,
+    name_in_sql,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -85,6 +87,18 @@ async def id(token_test = Depends(get_current_user)):
     uid = token_test["uid"]
     return [uid]
 
+
+@app.post("/post/name")
+def _(
+    user_id: str,
+    name: str,
+):
+    if not id_in_sql(user_id):
+        return { "error": "Invalid id"}
+    if not name_in_sql(name):
+        return {"error": "exist same name"}
+    register_user(user_id, name)
+    return
 
 
 @app.post("/post/board")
