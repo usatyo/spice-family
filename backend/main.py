@@ -93,12 +93,12 @@ def _(
     user_id: str,
     name: str,
 ):
-    if not id_in_sql(user_id):
+    if id_in_sql(user_id) or not user_id:
         return { "error": "Invalid id"}
-    if not name_in_sql(name):
+    if name_in_sql(name) or not name:
         return {"error": "exist same name"}
     register_user(user_id, name)
-    return
+    return name
 
 
 @app.post("/post/board")
@@ -162,7 +162,7 @@ def _(
 
     update_rate(black, b_rate)
     update_rate(white, w_rate)
-    return {}
+    return
 
 
 @app.get("/get/rate")
