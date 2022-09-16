@@ -1,62 +1,64 @@
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from "chart.js"
+import { response } from '../utils/api'
 
 Chart.register(...registerables)
 
-const MyChart = (props) => {
+const MyChart = () => {
 
-  const labels = [
-    // 軸ラベル
-    // 各ラベルを配列にすることで軸ラベルが改行されて表示される
-    '2021 / 10',
-    '2021 / 12',
-    '2021 / 11',
-    '2022 / 1',
-    '2022 / 2',
-    '2022 / 3',
-    '2022 / 4',
-    '2022 / 5',
-    '2022 / 6',
-    '2022 / 7',
-    '2022 / 8',
-    '2022 / 9',
-  ]
-  /** グラフデータ */
-  const graphData = {
-    labels: labels,
-    datasets: [
-      // 表示するデータセット
-      {
-        data: props.data,
-        backgroundColor: 'rgba(30, 144, 255, 1)',
-        label: '直近12か月のレート',
-      },
-    ],
-  };
+  let begin = new Date()
+  let end = new Date();
 
-  /** グラフオプション */
+  begin.setDate(begin.getDate() - 30);
+  begin.setHours(0, 0, 0, 0);
+
+  const labels = []
+
+  for (var d = begin; d <= end; d.setDate(d.getDate() + 1)) {
+    var formatedDate = (d.getMonth() + 1) + '/' + d.getDate();
+    labels.push(formatedDate);
+  }
+
+  const data = Object.values(response)
+
+    const graphData = {
+      labels: labels,
+      datasets: [
+        {
+          data: data,
+          backgroundColor: 'rgba(30, 144, 255, 1)',
+          label: '直近1か月のレート',
+          pointRadius: 5,
+          borderWidth: 5,
+        },
+      ],
+    };
+
   const graphOption = {
     scales: {
       xAxes: [
-        // x軸オプション
         {
           scaleLabel: {
-            // x軸ラベルオプション
             display: true,
-            labelString: '2021年',
+            labelString: '日付',
           },
+          type: 'time',
+          time: {
+            unit: 'day',
+          },
+          ticks: {
+            min: begin,
+            max: end
+          }
         },
       ],
       yAxes: [
-        // y軸オプション
         {
           scaleLabel: {
-            // y軸ラベルオプション
             display: true,
             labelString: 'レート',
           },
           ticks: {
-            // y軸メモリオプション
             beginAtZero: true,
             callback: function (value, index, values) {
               return value;
@@ -69,7 +71,6 @@ const MyChart = (props) => {
 
   return (
     <div>
-      {/* グラフコンポーネントの呼び出し */}
       <Line data={graphData} options={graphOption} />
     </div>
   );

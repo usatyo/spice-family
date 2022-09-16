@@ -7,8 +7,7 @@ import TimerSvg from '../assets/timer.svg'
 
 
 const Home = () => {
-    let initial_data = [560, 720, 1060, 1360, 200, 2180, 2410, 2840, 2510, 1940, 1310, 850]
-    const [data, setData] = useState(initial_data);
+    
     return (
         <div className="App" >
             <header className="App-header">
@@ -24,7 +23,7 @@ const Home = () => {
                         <Box pt={3} pl={4} bg={"white"} color={"black"} fontSize={17} textAlign={"left"} shadow="lg" rounded="10px" w="180px" h="50px">北海道大学囲碁部</Box>
                     </HStack>
                     <Stack p={12} bg={"white"} shadow="lg" rounded="20px" w="900px" h="450px">
-                        <MyChart data={data}/>
+                        <MyChart />
                     </Stack>
                 </VStack>
             </header>
