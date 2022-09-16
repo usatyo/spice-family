@@ -1,3 +1,4 @@
+from curses import keyname
 import MySQLdb
 import datetime
 
@@ -129,8 +130,15 @@ def get_all_rate(id):
     connection.close()
 
     ret = []
+    key = ""
     for info in datas:
-        ret.append({"rate": info[2], "time": info[3]})
+        date = map(int, str(info[3].date()).split("-"))
+        date = "/".join(map(str, date))
+        if key == date:
+            ret[-1] = {key: info[2]}
+        else:
+            key = date
+            ret.append({key: info[2]})
     return ret
 
 
@@ -332,7 +340,8 @@ def register_user(id, name):
     cursor.execute(
         """INSERT INTO user_info (user_id, name)
         VALUES (%s, %s)
-        """, [(id), (name)],
+        """,
+        [(id), (name)],
     )
     connection.commit()
     connection.close()
@@ -344,7 +353,8 @@ def get_name(id):
     cursor = connection.cursor()
     cursor.execute(
         """SELECT name FROM user_info WHERE user_id=%s
-        """, [(id)]
+        """,
+        [(id)],
     )
     name = cursor.fetchall()[0][0]
     connection.commit()
