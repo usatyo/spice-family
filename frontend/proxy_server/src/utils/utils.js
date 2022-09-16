@@ -22,6 +22,17 @@ export const postNewGame = async (black_id, white_id) => {
   }
 }
 
+export const postMove = async (game_id, src) => {
+  try {
+    const res = await axios.post(baseUrl + `/post/move/base64?game_id=${game_id}`, { img: src })
+    const blob = new Blob([res.data], { type: 'image/png' })
+    const url = window.URL || window.webkitURL
+    return url.createObjectURL(blob)
+  } catch (err) {
+    console.log("err:", err)
+  }
+}
+
 export const postResult = async (game_id, result) => {
   try {
     const res = await axios.post(baseUrl + `/post/result?game_id=${game_id}&result=${result}`)

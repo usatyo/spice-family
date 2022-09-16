@@ -12,11 +12,13 @@ import {
 } from '@chakra-ui/react';
 import { CountdownCircleTimer } from 'react-countdown-circle-timer';
 import { useLocation, BrowserRouter, Routes, Link, Route } from 'react-router-dom';
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useContext, useEffect } from 'react';
 import './../App.css';
 import banImg from './../assets/ban.png';
 import Webcam from "react-webcam";
 import { makeStyles } from "@material-ui/core/styles";
+import { postMove } from '../utils/utils';
+import { AppContext } from '../contexts/AppContext';
 
 //カメラを非表示にするために使用
 const useStyles = makeStyles(() => ({
@@ -68,8 +70,6 @@ function XOR(a, b) {
   return (a || b) && !(a && b);
 }
 
-function sendImg(url) {
-}
 
 var motijikan = 0;
 var byoyomi = 0;
@@ -88,8 +88,9 @@ const Timer = () => {
   kouryokaisuu = kk;
   hande = h;
   startLeft = s;
-
-
+  
+  const {game_id} = useContext(AppContext)
+  
   var leftBadge, rightBadge;
   //先手と後手のラベル
   const kuro = <Box bg={"black"} rounded="full" w="100px" h="50px">
@@ -114,13 +115,22 @@ const Timer = () => {
   const [isPause, setIsPause] = useState(false);
   const { isOpen: isOpenEnd, onOpen: onOpenEnd, onClose: onCloseEnd } = useDisclosure();
   const { isOpen: isOpenTimeUp, onOpen: onOpenTimeUp, onClose: onCloseTimeUp } = useDisclosure();
-
+  
   const [kouryoLeft, setKouryoLeft] = useState(kouryokaisuu);
   const [kouryoRight, setKouryoRight] = useState(kouryokaisuu);
   const [byoyomiStateLeft, setByoyomiStateLeft] = useState(0);//0:通常 1:秒読み 
   const [byoyomiStateRight, setByoyomiStateRight] = useState(0);//0:通常 1:秒読み 
   const [keyL, setKeyL] = useState(0)//タイマーリセット用
   const [keyR, setKeyR] = useState(0)
+
+  const [boardImg, setBoardImg] = useState(banImg)
+
+  useEffect(() => {
+    const func = async () => {
+      setBoardImg(await postMove(game_id, url))
+    }
+    func()
+  }, [])
 
   //カメラ関連
   const webcamRef = useRef(null);
@@ -129,7 +139,7 @@ const Timer = () => {
     const imageSrc = webcamRef.current?.getScreenshot();
     if (imageSrc) {
       setUrl(imageSrc);
-      sendImg(imageSrc);
+      // sendImg(imageSrc);
     }
   }, [webcamRef]);
   const classes = useStyles();
@@ -243,7 +253,7 @@ const Timer = () => {
                     <Text as="span" fontSize={30} color="blue.500" fontWeight="bold">手目</Text>
                   </Box>
                   <Box p={10} bg="white" shadow="lg" borderRadius={10} padding="10px">
-                    <img src={banImg} w="full" />
+                    <img src={boardImg} w="full" />
                   </Box>
                   <Box w="full">
                     <HStack marginTop={4}>
