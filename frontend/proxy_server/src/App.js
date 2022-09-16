@@ -7,6 +7,7 @@ import Home from './pages/Home'
 import Timer from './pages/Timer'
 import Result from './pages/Result'
 import Prepare from './pages/Prepare'
+import Record from './pages/Record'
 
 function App() {
   var primaryColor = '#59A4CB';
@@ -17,6 +18,7 @@ function App() {
         <Route path='/timer' element={<Timer />} />
         <Route path='/result' element={<Result />} />
         <Route path='/prepare' element={<Prepare />} />
+        <Route path='/record' element={<Record />} />
       </Routes>
     </BrowserRouter>
   );
