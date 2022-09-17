@@ -1,15 +1,19 @@
-import os 
+import os
+from pydantic import BaseModel
 import uvicorn
 import cv2
 import shutil
 import os
+import base64
+from utility import gen_boardimg
 from utility import calc_rate
-from dotenv  import load_dotenv
+from dotenv import load_dotenv
 import firebase_admin
 from firebase_admin import credentials, auth
 from fastapi.responses import FileResponse
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from fastapi import FastAPI, Depends, HTTPException, status, File, UploadFile
+from fb_setting import get_current_user
 from database import (
     initialize,
     update_rate,
@@ -19,6 +23,13 @@ from database import (
     update_result,
     get_all_result,
     id_in_sql,
+    update_record,
+    get_record,
+    new_game,
+    register_corner,
+    get_corner,
+    register_user,
+    name_in_sql,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -26,17 +37,17 @@ from correct_board import cor_board
 from fastapi.middleware.cors import CORSMiddleware
 
 
+class Item(BaseModel):
+    src: str
+
+
 load_dotenv()
 
-# key_path = os.environ['GOOGLE_APPLICATION_CREDENTIALS']
-# print(key_path)
-# cred = credentials.RefreshToken(key_path)
-# default_app = firebase_admin.initialize_app(cred)
 default_app = firebase_admin.initialize_app()
 
 
 initialize()
-app = FastAPI() 
+app = FastAPI()
 
 
 def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
@@ -45,11 +56,11 @@ def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer()))
     except:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail='Invalid authentication credentials',
-            headers={'WWW-Authenticate': 'Bearer'},
+            detail="Invalid authentication credentials",
+            headers={"WWW-Authenticate": "Bearer"},
         )
 
-    user = decoded_token['firebase']['identities']
+    user = decoded_token["firebase"]["identities"]
 
     return user
 
@@ -69,8 +80,34 @@ app.add_middleware(
 )
 
 
+@app.get("/")
+async def root():
+    return {"message": "this is root"}
+
+
+# firebaseからuidを取ってきたいときの実装
+@app.get("/sample")
+async def id(token_test=Depends(get_current_user)):
+    uid = token_test["uid"]
+    return [uid]
+
+
+@app.post("/post/name")
+def _(
+    user_id: str,
+    name: str,
+):
+    if id_in_sql(user_id) or not user_id:
+        return {"error": "Invalid id"}
+    if name_in_sql(name) or not name:
+        return {"error": "exist same name"}
+    register_user(user_id, name)
+    return name
+
+
 @app.post("/post/board")
 def _(
+    game_id: int,
     upload_file: UploadFile = File(...),
 ):
     path = "files/given.jpg"
@@ -78,40 +115,67 @@ def _(
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath(path))
     x, y = det_board(im)
-    print(x)
-    print(y)
+    register_corner(game_id, x, y)
     cor_board(im, x, y)
 
     return FileResponse("files/corrected.jpg")
 
 
-@app.post("/post/move")
+@app.post("/post/start_game")
 def _(
     black: str,
     white: str,
-    upload_file: UploadFile = File(...),
 ):
     if not id_in_sql(black) or not id_in_sql(white):
         return {"error": "non-exist user_id"}
+    game_id = new_game(black, white)
+    return {"game_id": game_id}
+
+
+@app.post("/post/move")
+def _(
+    game_id: int,
+    upload_file: UploadFile = File(...),
+):
     path = "files/given.jpg"
     with open(path, "w+b") as buffer:
         shutil.copyfileobj(upload_file.file, buffer)
     im = cv2.imread(os.path.abspath("files/given.jpg"))
-    color_array(im)
+    x, y = get_corner(game_id)
+    cor_board(im, x, y)
+    im = cv2.imread(os.path.abspath("files/corrected.jpg"))
+    rec = color_array(im)
+    update_record(game_id, rec)
+    return FileResponse("files/output.jpg")
+
+
+@app.post("/post/move/base64")
+def _(
+    game_id: int,
+    img: Item,
+):
+    decoded_img = base64.b64decode(img.src)
+    path = "files/given.jpg"
+    f = open(path, "wb")
+    f.write(decoded_img)
+    f.close()
+    im = cv2.imread(os.path.abspath("files/given.jpg"))
+    x, y = get_corner(game_id)
+    cor_board(im, x, y)
+    im = cv2.imread(os.path.abspath("files/corrected.jpg"))
+    rec = color_array(im)
+    update_record(game_id, rec)
     return FileResponse("files/output.jpg")
 
 
 @app.post("/post/result")
 def _(
-    black: str,
-    white: str,
+    game_id: int,
     result: int,
 ):
-    if not id_in_sql(black) or not id_in_sql(white):
-        return {"error": "invalid user_id"}
     if result < -1 or 1 < result:
         return {"error": "invalid result"}
-    update_result(black, white, result)
+    black, white = update_result(game_id, result)
     b_rate = get_current_rate(black)[0]["rate"]
     w_rate = get_current_rate(white)[0]["rate"]
     if result == 1:
@@ -121,7 +185,7 @@ def _(
 
     update_rate(black, b_rate)
     update_rate(white, w_rate)
-    return {}
+    return
 
 
 @app.get("/get/rate")
@@ -133,7 +197,7 @@ def _(id: str):
 
 @app.get("/me")
 def user_hello(current_user=Depends(get_current_user)):
-    return {"msg":"Hello","user":current_user}
+    return {"msg": "Hello", "user": current_user}
 
 
 @app.get("/get/rate_hist")
@@ -149,5 +213,17 @@ def _():
 
 
 @app.get("/get/result")
-def _():
-    return get_all_result()
+def _(id: str):
+    return get_all_result(id)
+
+
+@app.get("/get/game_record")
+def _(
+    game_id: int,
+    turn: int,
+):
+    state = get_record(game_id, turn)
+    if state == -1:
+        return {"error": "Invalid game_id or invalid turn"}
+    gen_boardimg(state)
+    return FileResponse("files/output.jpg")

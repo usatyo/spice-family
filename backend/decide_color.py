@@ -35,7 +35,7 @@ def color_array(image):
 
     gen_boardimg(ret)
     cv2.imwrite("files/test.jpg", circle_image)
-    return
+    return ret
 
     # cv2.imshow("image", circle_image)
     # cv2.waitKey()

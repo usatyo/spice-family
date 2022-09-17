@@ -10,6 +10,8 @@ import Prepare from './pages/Prepare'
 import Register from './pages/Register'
 import Login from './pages/Login'
 import History from './pages/History'
+import Record from './pages/Record'
+import AppContextProvider from './contexts/AppContext';
 
 function App() {
   var primaryColor = '#59A4CB';
@@ -23,6 +25,7 @@ function App() {
         <Route path='/register' element={<Register />} />
         <Route path='/login' element={<Login />} />
         <Route path='/history' element={<History />} />
+        <Route path='/record' element={<Record />} />
       </Routes>
     </BrowserRouter>
   );
@@ -31,7 +34,9 @@ function App() {
 const AppContainer = () => {
   return (
     <ChakraProvider>
-      <App />
+      <AppContextProvider>
+        <App />
+      </AppContextProvider>
     </ChakraProvider>
   )
 }

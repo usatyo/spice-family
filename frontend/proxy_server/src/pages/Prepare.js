@@ -25,7 +25,7 @@ const Prepare = () => {
         <div className="App">
             <header className="App-header">
                 <Stack spacing="30px" p="40px" w={"full"}>
-                    < Box >
+                    <Box>
                         <div className="Title1">Prepare</div>
                         <Text p="4px" textAlign={"left"} fontSize="20px" color="black">対局を開始します。準備を行ってください。</Text>
                     </Box>
@@ -121,9 +121,9 @@ const Prepare = () => {
                         </Button>
                     </Link>
 
-                </Stack >
-            </header >
-        </div >
+                </Stack>
+            </header>
+        </div>
     )
 }
 
