@@ -4,7 +4,7 @@ import { Box, Button, Stack, HStack, Flex, Text, Center, Image } from "@chakra-u
 import { Link } from 'react-router-dom';
 import MyChart from '../components/MyChart'
 
-import { TimeIcon } from '@chakra-ui/icons'
+import { TimeIcon, RepeatClockIcon } from '@chakra-ui/icons'
 
 const Home = () => {
 
@@ -17,8 +17,9 @@ const Home = () => {
                         <Text color="gray.600" fontSize="3xl" textAlign={"left"} fontWeight="bold" >白黒の世界に彩りを</Text>
                         <Text color="blue.400" fontSize="5xl" textAlign={"left"} fontWeight="bold">プロ棋士サーバ</Text>
                         <Text color="gray.500" fontSize="xl" textAlign={"left"} fontWeight="bold">ここにアプリの簡単な説明ここにアプリの簡単な説明ここにアプリの簡単な説明ここにアプリの簡単な説明ここにアプリの簡単な説明ここにアプリの簡単な説明ここにアプリの簡単な</Text>
-                        <Link to="/prepare" >
-                            <HStack paddingTop="10px">
+
+                        <HStack paddingTop="10px">
+                            <Link to="/prepare" >
                                 <Button colorScheme="blue" variant="solid" w="200px" h="50px" borderRadius="25px" alignContent="left" shadow="lg" >
                                     <HStack>
                                         <TimeIcon w={7} h={7} color="white.500" />
@@ -26,10 +27,21 @@ const Home = () => {
                                             対局準備</Text>
                                     </HStack>
                                 </Button>
-                                <Spacer />
-                            </HStack>
+                            </Link>
+                        </HStack>
+                        <HStack paddingTop="10px">
+                            <Link to="/record" >
+                                <Button colorScheme="blue" variant="outline" w="290px" h="50px" borderRadius="25px" alignContent="left" shadow="lg" >
+                                    <HStack>
+                                        <RepeatClockIcon w={7} h={7} color="white.500" />
+                                        <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">
+                                            直近の結果を見る</Text>
+                                    </HStack>
+                                </Button>
+                            </Link>
+                        </HStack>
 
-                        </Link>
+
                         <Box paddingTop="50px" paddingBottom="10px">
                             <Box w="full" h="2px" bg="gray.300" />
                         </Box>

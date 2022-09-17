@@ -98,11 +98,19 @@ const Result = () => {
                         </Flex>
 
                     </HStack >
-                    <Link to='/'>
-                        <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
-                            <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
-                        </Button>
-                    </Link>
+                    <HStack justify="center">
+                        <Link to='/record'>
+                            <Button m="20px" colorScheme=" blue" variant="outline" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
+                                <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局の記録を見る</Text>
+                            </Button>
+                        </Link>
+                        <Link to='/'>
+                            <Button m="20px" colorScheme=" blue" variant="solid" w="400px" h="70px" borderRadius={25} onClick={() => { }}>
+                                <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">終了</Text>
+                            </Button>
+                        </Link>
+                    </HStack>
+
 
                 </Box>
             </header >
