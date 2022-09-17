@@ -1,7 +1,7 @@
 import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, Stack, HStack, Flex, Text, Center } from "@chakra-ui/react";
 import { TriangleUpIcon, TriangleDownIcon } from '@chakra-ui/icons';
-import { BrowserRouter, Routes, Link, Route } from 'react-router-dom';
+import { useLocation, BrowserRouter, Routes, Link, Route } from 'react-router-dom';
 import NumberEasing from 'react-number-easing';
 import React, { useState } from 'react';
 import './../App.css';
@@ -13,14 +13,16 @@ const downIcon = <TriangleDownIcon w="50px" h="50px" color="blue.500" />;
 
 const Result = () => {
     var winner = "left";
-    var oldLeftScore = 1532;
-    var oldRightScore = 1490;
-    var newleftScore = 1600;
-    var newrightScore = 1420;
+    var oldLeftScore = 1532;//試合前の左側のレーティング
+    var oldRightScore = 1490;//試合前の右側のレーティング
+    var newleftScore = 1600;//試合後の左側のレーティング
+    var newrightScore = 1420;//試合後の右側のレーティング
     var [leftScore, setLeftScore] = useState(oldLeftScore);
     var [rightScore, setRightScore] = useState(oldRightScore);
     let leftDist = newleftScore - oldLeftScore;
     let rightDist = newrightScore - oldRightScore;
+    const location = useLocation();
+    const { ad } = location.state;//ad:ハンデ戦の際に置いた置いた石の数(int型)
     //do after 1 seconds
     setTimeout(() => {
         setLeftScore(newleftScore); setRightScore(newrightScore);
