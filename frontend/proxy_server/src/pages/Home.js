@@ -38,14 +38,14 @@ const Home = () => {
                         <>
                             <div className="App" >
                                 <header className="App-header">
-                                    <Button bg={"white"} shadow="lg" roundedLeft="25px" w="10%" marginLeft="auto" onClick={logout}>ログアウト</Button>
+
                                     <Stack p="40px" paddingRight="0" w="full" spacing={10} flexDirection="row">
                                         {/*左側の部分  */}
                                         <Stack w="40%" h="full" paddingTop="40px" paddingRight="50px" paddingLeft="50px" >
                                             <Text color="gray.600" fontSize="3xl" textAlign={"left"} fontWeight="bold" >白黒の世界に彩りを</Text>
                                             <Text color="blue.400" fontSize="5xl" textAlign={"left"} fontWeight="bold">プロ棋士サーバ</Text>
                                             <Text color="gray.500" fontSize="xl" textAlign={"left"} fontWeight="bold">対局を通して囲碁のスキルを磨き、より高いレートを目指しましょう。プロ棋士サーバを利用すれば、対局時計を用意する必要も棋譜を記憶する必要もありません！</Text>
-                                            <HStack paddingTop="10px">
+                                            <HStack paddingTop="15px">
                                                 <Link to="/prepare" >
                                                     <Button colorScheme="blue" variant="solid" w="200px" h="50px" borderRadius="25px" alignContent="left" shadow="lg" >
                                                         <HStack>
@@ -56,7 +56,7 @@ const Home = () => {
                                                     </Button>
                                                 </Link>
                                             </HStack>
-                                            <HStack paddingTop="10px">
+                                            <HStack paddingTop="15px">
                                                 <Link to="/record" >
                                                     <Button colorScheme="blue" variant="outline" w="290px" h="50px" borderRadius="25px" alignContent="left" shadow="lg" >
                                                         <HStack>
@@ -67,9 +67,20 @@ const Home = () => {
                                                     </Button>
                                                 </Link>
                                             </HStack>
-                                            <Box paddingTop="50px" paddingBottom="10px">
+
+                                            <Box paddingTop="20px" paddingBottom="5px">
                                                 <Box w="full" h="2px" bg="gray.300" />
                                             </Box>
+                                            <HStack paddingTop="10px">
+                                                <Link to="/record" >
+                                                    <Button colorScheme="grey" variant="outline" w="150px" h="34px" borderRadius="25px" onClick={logout} alignContent="left">
+                                                        <HStack>
+                                                            <Text fontSize="lg">
+                                                                ログアウト</Text>
+                                                        </HStack>
+                                                    </Button>
+                                                </Link>
+                                            </HStack>
                                             <Text p="4px" fontSize="20px" textAlign={"left"} color="gray.400">Created by SpiceFamily</Text>
                                         </Stack>
 
