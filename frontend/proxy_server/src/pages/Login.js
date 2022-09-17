@@ -73,7 +73,7 @@ const Login = () => {
                                                 onChange={(e) => setLoginEmail(e.target.value)}
                                             />
                                         </FormControl>
-                                        <FormControl isRequired paddingBottom="20px">
+                                        <FormControl isRequired paddingBottom="30px">
                                             <FormLabel>パスワード</FormLabel>
                                             <Input
                                                 name="password"
