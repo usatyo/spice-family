@@ -17,8 +17,10 @@ import './../App.css';
 import banImg from './../assets/ban.png';
 import Webcam from "react-webcam";
 import { makeStyles } from "@material-ui/core/styles";
-import { postMove } from '../utils/utils';
+import { postMove, postName } from '../utils/utils';
 import { AppContext } from '../contexts/AppContext';
+
+
 
 //カメラを非表示にするために使用
 const useStyles = makeStyles(() => ({
@@ -130,7 +132,8 @@ const Timer = () => {
 
   useEffect(() => {
     const func = async () => {
-      setBoardImg(await postMove(game_id, url))
+    //   setBoardImg(await postMove(game_id, url))
+        console.log(postName("takashi"))
     }
     func()
   }, [])

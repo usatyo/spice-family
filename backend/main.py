@@ -30,6 +30,7 @@ from database import (
     get_corner,
     register_user,
     name_in_sql,
+    get_name,
 )
 from decide_color import color_array
 from detect_board import det_board
@@ -74,20 +75,32 @@ async def root():
 @app.get("/sample")
 async def id(token_test=Depends(get_current_user)):
     uid = token_test["uid"]
+    print(uid)
     return [uid]
 
 
 @app.post("/post/name")
 def _(
-    user_id: str,
-    name: str,
+    # name: str,
+    token=Depends(get_current_user),
 ):
-    if id_in_sql(user_id) or not user_id:
-        return {"error": "Invalid id"}
+    name = "takashi"
+    user_id = token["uid"]
     if name_in_sql(name) or not name:
         return {"error": "exist same name"}
     register_user(user_id, name)
-    return name
+    return
+
+
+@app.post("/post/start_game")
+def _(
+    black: str,
+    white: str,
+):
+    if not id_in_sql(black) or not id_in_sql(white):
+        return {"error": "non-exist user_id"}
+    game_id = new_game(black, white)
+    return {"game_id": game_id}
 
 
 @app.post("/post/board")
@@ -104,17 +117,6 @@ def _(
     cor_board(im, x, y)
 
     return FileResponse("files/corrected.jpg")
-
-
-@app.post("/post/start_game")
-def _(
-    black: str,
-    white: str,
-):
-    if not id_in_sql(black) or not id_in_sql(white):
-        return {"error": "non-exist user_id"}
-    game_id = new_game(black, white)
-    return {"game_id": game_id}
 
 
 @app.post("/post/move")
@@ -174,22 +176,27 @@ def _(
 
 
 @app.get("/get/rate")
-def _(id: str):
-    if not id_in_sql(id):
-        return {"error": "invalid user_id"}
-    return get_current_rate(id)
-
-
-@app.get("/me")
-def user_hello(current_user=Depends(get_current_user)):
-    return {"msg": "Hello", "user": current_user}
+def _(
+    token=Depends(get_current_user),
+):
+    user_id = token["uid"]
+    return get_current_rate(user_id)
 
 
 @app.get("/get/rate_hist")
-def _(id: str):
-    if not id_in_sql(id):
-        return {"error": "invalid user_id"}
-    return get_all_rate(id)
+def _(
+    token=Depends(get_current_user),
+):
+    user_id = token["uid"]
+    return get_all_rate(user_id)
+
+
+@app.get("/get/name")
+def _(
+    token=Depends(get_current_user)
+):
+    user_id = token["uid"]
+    return get_name(user_id)
 
 
 @app.get("/get/all_name")
@@ -198,8 +205,11 @@ def _():
 
 
 @app.get("/get/result")
-def _(id: str):
-    return get_all_result(id)
+def _(
+    token=Depends(get_current_user),
+):
+    user_id = token["uid"]
+    return get_all_result(user_id)
 
 
 @app.get("/get/game_record")
