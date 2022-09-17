@@ -5,13 +5,14 @@ import { Link } from 'react-router-dom';
 import MyChart from '../components/MyChart'
 
 import { TimeIcon, RepeatClockIcon } from '@chakra-ui/icons'
+import { transform } from 'framer-motion';
 
 const Home = () => {
 
     return (
         <div className="App" >
             <header className="App-header">
-                <HStack p="40px" paddingRight="0" w="full" spacing={10}>
+                <Stack p="40px" paddingRight="0" w="full" spacing={10} flexDirection="row">
                     {/*左側の部分  */}
                     <Stack w="40%" h="full" paddingTop="40px" paddingRight="50px" paddingLeft="50px" >
                         <Text color="gray.600" fontSize="3xl" textAlign={"left"} fontWeight="bold" >白黒の世界に彩りを</Text>
@@ -51,7 +52,8 @@ const Home = () => {
                     </Stack>
 
                     {/*右側の部分  */}
-                    <Stack bg={" white"} shadow="lg" roundedLeft="25px" w="60%">
+
+                    <Stack style={{ marginTop: 120 }} bg={" white"} shadow="lg" roundedLeft="25px" w="60%" h="min">
                         <HStack>
                             <Box w="350px" bg="blue.400" roundedBottomRight="25px" roundedTopLeft="25px">
                                 <Text p="10px" fontSize="20px" fontWeight="bold" color="white">プレイヤーのレーティング推移</Text>
@@ -63,7 +65,8 @@ const Home = () => {
                         </Box>
                     </Stack>
 
-                </HStack >
+
+                </Stack >
             </header >
         </div >
     )
