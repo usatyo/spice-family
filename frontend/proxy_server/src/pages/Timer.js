@@ -76,21 +76,22 @@ var byoyomi = 0;
 var kouryokaisuu = 0;
 var hande = 0;
 var startLeft = false;
+var stoneAdv = 0;
 
 
 
 const Timer = () => {
   //ゲーム設定
   const location = useLocation();
-  const { m, b, kk, h, s } = location.state;
+  const { m, b, kk, h, s, ad } = location.state;
   motijikan = m * 60;
   byoyomi = b;
   kouryokaisuu = kk;
   hande = h;
   startLeft = s;
-  
-  const {game_id} = useContext(AppContext)
-  
+  stoneAdv = ad;
+  const { game_id } = useContext(AppContext)
+
   var leftBadge, rightBadge;
   //先手と後手のラベル
   const kuro = <Box bg={"black"} rounded="full" w="100px" h="50px">
@@ -115,7 +116,7 @@ const Timer = () => {
   const [isPause, setIsPause] = useState(false);
   const { isOpen: isOpenEnd, onOpen: onOpenEnd, onClose: onCloseEnd } = useDisclosure();
   const { isOpen: isOpenTimeUp, onOpen: onOpenTimeUp, onClose: onCloseTimeUp } = useDisclosure();
-  
+
   const [kouryoLeft, setKouryoLeft] = useState(kouryokaisuu);
   const [kouryoRight, setKouryoRight] = useState(kouryokaisuu);
   const [byoyomiStateLeft, setByoyomiStateLeft] = useState(0);//0:通常 1:秒読み 
@@ -361,22 +362,31 @@ export default Timer
 function endModal(isOpen, onClose, playState) {
   return <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
-    <ModalContent>
+    <ModalContent >
       <ModalHeader>終了しますか?</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        {(playState == "left") ? "左" : "右"}側のプレイヤーの敗北となります。
+        対局結果を選択してください。
       </ModalBody>
       <ModalFooter>
-        <Button variant='ghost' onClick={onClose}>続ける</Button>
-        <Link to="/result">
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 2 }}>
           <Button colorScheme='blue' mr={3}>
-            終了する
+            左の勝利
           </Button>
         </Link>
-      </ModalFooter>
-    </ModalContent>
-  </Modal>;
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 1 }}>
+          <Button variant="outline" colorScheme='blue' mr={3}>
+            引き分け
+          </Button>
+        </Link>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 0 }}>
+          <Button colorScheme='blue' mr={3}>
+            右の勝利
+          </Button>
+        </Link>
+      </ModalFooter >
+    </ModalContent >
+  </Modal >;
 }
 
 
@@ -390,7 +400,7 @@ function endTimeUpModal(isOpen, onClose, playState) {//閉じれないように�
         {(playState == "left") ? "左" : "右"}側のプレイヤーの敗北となります。
       </ModalBody>
       <ModalFooter>
-        <Link to="/result">
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: (playState == "left") ? 0 : 2 }}>
           <Button colorScheme='blue' mr={3}>
             終了する
           </Button>
