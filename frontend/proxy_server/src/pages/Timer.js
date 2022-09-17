@@ -76,21 +76,22 @@ var byoyomi = 0;
 var kouryokaisuu = 0;
 var hande = 0;
 var startLeft = false;
+var stoneAdv = 0;
 
 
 
 const Timer = () => {
   //ゲーム設定
   const location = useLocation();
-  const { m, b, kk, h, s } = location.state;
+  const { m, b, kk, h, s, ad } = location.state;
   motijikan = m * 60;
   byoyomi = b;
   kouryokaisuu = kk;
   hande = h;
   startLeft = s;
-  
-  const {game_id} = useContext(AppContext)
-  
+  stoneAdv = ad;
+  const { game_id } = useContext(AppContext)
+
   var leftBadge, rightBadge;
   //先手と後手のラベル
   const kuro = <Box bg={"black"} rounded="full" w="100px" h="50px">
@@ -115,7 +116,7 @@ const Timer = () => {
   const [isPause, setIsPause] = useState(false);
   const { isOpen: isOpenEnd, onOpen: onOpenEnd, onClose: onCloseEnd } = useDisclosure();
   const { isOpen: isOpenTimeUp, onOpen: onOpenTimeUp, onClose: onCloseTimeUp } = useDisclosure();
-  
+
   const [kouryoLeft, setKouryoLeft] = useState(kouryokaisuu);
   const [kouryoRight, setKouryoRight] = useState(kouryokaisuu);
   const [byoyomiStateLeft, setByoyomiStateLeft] = useState(0);//0:通常 1:秒読み 
@@ -369,7 +370,7 @@ function endModal(isOpen, onClose, playState) {
       </ModalBody>
       <ModalFooter>
         <Button variant='ghost' onClick={onClose}>続ける</Button>
-        <Link to="/result">
+        <Link to="/result" state={{ ad: stoneAdv }}>
           <Button colorScheme='blue' mr={3}>
             終了する
           </Button>
@@ -390,7 +391,7 @@ function endTimeUpModal(isOpen, onClose, playState) {//閉じれないように�
         {(playState == "left") ? "左" : "右"}側のプレイヤーの敗北となります。
       </ModalBody>
       <ModalFooter>
-        <Link to="/result">
+        <Link to="/result" state={{ ad: stoneAdv }}>
           <Button colorScheme='blue' mr={3}>
             終了する
           </Button>

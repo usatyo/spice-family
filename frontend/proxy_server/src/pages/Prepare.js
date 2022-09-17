@@ -17,6 +17,7 @@ const Prepare = () => {
     const [handeMode, setHandeMode] = React.useState("0");
     const [startLeft, setStartLeft] = React.useState("true");
     const [motijikan, setMatijikan] = React.useState("40");
+    const [stone, setStone] = React.useState("2");
     const [byoyomi, setByoyomi] = React.useState("30");
     const [kouryokaisuu, setKouryokaisuu] = React.useState("3");
     //カメラ関連
@@ -112,10 +113,25 @@ const Prepare = () => {
                                     {handeRadio(setHandeMode, handeMode)}
                                 </Stack>
                             </Box>
+                            <Box p={6} paddingRight={10} transition="0.5s" bg={(handeMode != 2) ? "gray.50" : "white"} shadow={(handeMode != 2) ? "none" : "xl"} rounded="40px" margin={"0%"} w="full" >
+                                <div className='Title2'>置碁設定</div>
+                                <HStack>
+                                    <div className='normal'>・置石の数(ハンデ戦のみ)</div>
+                                    <Spacer />
+                                    <NumberInput isDisabled={(handeMode != 2)} w="100px" step={1} defaultValue={2} min={2} max={9} value={stone} onChange={(value) => { setStone(value) }}>
+                                        <NumberInputField />
+                                        <NumberInputStepper>
+                                            <NumberIncrementStepper />
+                                            <NumberDecrementStepper />
+                                        </NumberInputStepper>
+                                    </NumberInput>
+                                    <div className='normal'>個</div>
+                                </HStack>
+                            </Box>
                         </VStack>
 
                     </Stack>
-                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true") }}>
+                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone) }}>
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>
@@ -123,7 +139,7 @@ const Prepare = () => {
 
                 </Stack>
             </header>
-        </div>
+        </div >
     )
 }
 

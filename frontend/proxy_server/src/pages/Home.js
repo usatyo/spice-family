@@ -7,7 +7,7 @@ import MyChart from '../components/MyChart'
 import { TimeIcon } from '@chakra-ui/icons'
 
 const Home = () => {
-    
+
     return (
         <div className="App" >
             <header className="App-header">
