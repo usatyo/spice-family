@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { AspectRatio, ChakraProvider, Spacer, VStack } from '@chakra-ui/react';
-import { Box, Button, Stack, HStack, Flex, Text, Center } from "@chakra-ui/react";
+import { Box, Button, Stack, HStack, Flex, Text, Center, Input } from "@chakra-ui/react";
+import {
+    FormControl,
+    FormLabel,
+    FormErrorMessage,
+    FormHelperText,
+} from '@chakra-ui/react'
 import {
     signInWithEmailAndPassword,
     onAuthStateChanged
@@ -53,31 +59,40 @@ const Login = () => {
                 <Navigate to={`/`} />
             ) : (
                 <>
-                    <h1>ログインページ</h1>
-                    <form onSubmit={handleSubmit}>
-                        <div>
-                            <label>メールアドレス</label>
-                            <input
-                                name="email"
-                                type="email"
-                                value={loginEmail}
-                                onChange={(e) => setLoginEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <label>パスワード</label>
-                            <input
-                                name="password"
-                                type="password"
-                                value={loginPassword}
-                                onChange={(e) => setLoginPassword(e.target.value)}
-                            />
-                        </div>
-                        <button>ログイン</button>
-                        <p>新規登録は<Link to={`/register/`}>こちら</Link></p>
-                    </form>
+                    <div className="App" >
+                        <header className="App-header">
+                            <VStack w="25%" h="40%" margin="auto" paddingTop="30px" paddingBottom="30px" bg="white" rounded={25}>
+                                <Text fontSize={30} paddingBottom="20px">Login</Text>
+                                    <form>
+                                        <FormControl isRequired paddingBottom="10px">
+                                            <FormLabel>メールアドレス</FormLabel>
+                                            <Input
+                                                name="email"
+                                                type="email"
+                                                value={loginEmail}
+                                                onChange={(e) => setLoginEmail(e.target.value)}
+                                            />
+                                        </FormControl>
+                                        <FormControl isRequired paddingBottom="20px">
+                                            <FormLabel>パスワード</FormLabel>
+                                            <Input
+                                                name="password"
+                                                type="password"
+                                                value={loginPassword}
+                                                onChange={(e) => setLoginPassword(e.target.value)}
+                                            />
+                                        </FormControl>
+                                        <Button width="full" marginTop="4px" type="submit" onClick={handleSubmit}>ログイン</Button>
+                                    </form>
+                                <Link to={`/register/`}>
+                                    <Text fontSize={14} paddingTop="10px">新規登録はこちら</Text>
+                                </Link>
+                            </VStack>
+                        </header>
+                    </div>
                 </>
-            )}
+            )
+            }
         </>
     );
 };
