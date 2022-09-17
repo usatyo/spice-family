@@ -1,11 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-.env
-.venv
-__pycache__/
-
-spice-test-project-d3472-firebase-adminsdk-o3avo-292ae9d77c.json
-
 # dependencies
 /node_modules
 /.pnp
@@ -19,11 +13,17 @@ spice-test-project-d3472-firebase-adminsdk-o3avo-292ae9d77c.json
 
 # misc
 .DS_Store
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+.venv
+__pycache__/
+
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+spice-test-project-d3472-firebase-adminsdk-o3avo-292ae9d77c.json
