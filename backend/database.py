@@ -28,6 +28,15 @@ def initialize():
         )"""
     )
 
+    # テスト用
+    cursor.execute(
+        """INSERT INTO user_info (user_id, name)
+        VALUES ('aaa', 'takashi'),
+        ('bbb', 'hiroshi'),
+        ('ccc', 'takoshi')
+        """
+    )
+
     cursor.execute(
         """CREATE TABLE rate_hist(
         id INT(11) AUTO_INCREMENT NOT NULL,
@@ -43,6 +52,7 @@ def initialize():
         game_id INT(11) AUTO_INCREMENT NOT NULL,
         black VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
         white VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,
+        hande INT(11) NOT NULL,
         corner VARCHAR(100) NOT NULL,
         result INT NOT NULL,
         time TIMESTAMP NOT NULL,
@@ -74,7 +84,7 @@ def get_all_pair():
 
     ret = []
     for info in datas:
-        ret.append({"id": info[0], "name": info[1]})
+        ret.append({"value": info[0], "label": info[1]})
     return ret
 
 
@@ -104,16 +114,12 @@ def get_all_rate(id):
     connection.commit()
     connection.close()
 
-    ret = []
-    key = ""
+    ret = {}
+
     for info in datas:
         date = map(int, str(info[3].date()).split("-"))
         date = "/".join(map(str, date))
-        if key == date:
-            ret[-1] = {key: info[2]}
-        else:
-            key = date
-            ret.append({key: info[2]})
+        ret[date] = info[2]
     return ret
 
 
@@ -232,16 +238,17 @@ def get_record(game_id, turn):
     return state
 
 
-def new_game(black, white):
+def new_game(black, white, hande):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        """INSERT INTO game_result (black, white, corner, result, time)
-        VALUES (%s, %s, %s, %s, %s)
+        """INSERT INTO game_result (black, white, hande, corner, result, time)
+        VALUES (%s, %s, %s, %s, %s, %s)
         """,
         [
             (black),
             (white),
+            (hande),
             (",".join(["0"] * 8)),
             ("0"),
             (str(datetime.datetime.now())),

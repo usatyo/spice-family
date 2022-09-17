@@ -1,12 +1,13 @@
 import { AspectRatio, Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, HStack, Stack, Flex, Text, Center, Image, Radio, RadioGroup, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper } from "@chakra-ui/react";
-import React, { useRef, useState, useCallback } from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import Select from 'react-select'
 import './../App.css';
 import '../styles/Prepare.css';
 import img from './../assets/prepare.png';
 import { Link } from 'react-router-dom';
 import Webcam from "react-webcam";
+import { getAllName, postNewGame } from '../utils/utils';
 
 const videoConstraints = {
     width: 1920,
@@ -16,14 +17,22 @@ const videoConstraints = {
 
 const Prepare = () => {
     //create string array
-    const playerData = [{ value: '0', label: 'playerA' }, { value: '1', label: 'playerB' }, { value: '2', label: 'playerC' }, { value: '3', label: 'playerD' }];
-    const [enemyID, setEnemyID] = React.useState(playerData[0][1]);//対戦相手を選択
+    const [playerData, setPlayerData] = useState([{value: "-", label: "-"}])
+    const [enemyID, setEnemyID] = React.useState(playerData[0].label);//対戦相手を選択
     const [handeMode, setHandeMode] = React.useState("0");
     const [startLeft, setStartLeft] = React.useState("true");
     const [motijikan, setMatijikan] = React.useState("40");
     const [stone, setStone] = React.useState("2");
     const [byoyomi, setByoyomi] = React.useState("30");
     const [kouryokaisuu, setKouryokaisuu] = React.useState("3");
+
+    useEffect(() => {
+        const func = async () => {
+            setPlayerData(await getAllName())
+        }
+        func()
+    }, [])
+
     //カメラ関連
     const webcamRef = useRef(null);
     return (
@@ -146,7 +155,7 @@ const Prepare = () => {
                         </VStack>
 
                     </Stack>
-                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone), en: enemyID }}>
+                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone), en: enemyID }} onClick={() => {postNewGame("aaa", "bbb")}}>
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>
@@ -154,7 +163,7 @@ const Prepare = () => {
 
                 </Stack>
             </header>
-        </div >
+        </div>
     )
 }
 

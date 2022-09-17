@@ -55,36 +55,36 @@ const sendTokenGet = async (query) => {
     }).catch((error) => {
         errorHandling(error)
     })
-    return res
+    return res.data
 }
 
-const sendTokenPost = async (query) => {
-    const idToken = localStorage.getItem('token')
-    console.log(idToken)
-    const res = await axios.post(query, {
-        headers: {
-            Authorization: `Bearer ${idToken}`,
-            body: 'Hi, everyone!'
-        }
-    }).then((res) => {
-        return res.data
-    }).catch((error) => {
-        errorHandling(error)
-    })
-    return res
-}
+// const sendTokenPost = async (query) => {
+//     const idToken = localStorage.getItem('token')
+//     console.log(idToken)
+//     const res = await axios.post(query, {
+//         headers: {
+//             Authorization: `Bearer ${idToken}`,
+//             body: 'Hi, everyone!'
+//         }
+//     }).then((res) => {
+//         return res.data
+//     }).catch((error) => {
+//         errorHandling(error)
+//     })
+//     return res.data
+// }
 
 export const postName = async (name) => {
     console.log("call postName")
     // return await sendTokenPost(baseUrl + `/post/name?name=${name}`)
-    return await sendTokenGet(baseUrl + `/sample`)
+    return await sendTokenGet(baseUrl + "/sample")
 }
 
-export const postNewGame = async (black_id, white_id) => {
+export const postNewGame = async (black_id, white_id, hande) => {
     try {
-        const res = await axios.post(baseUrl + `/post/start_game?black=${black_id}&white=${white_id}`)
+        const res = await axios.post(baseUrl + `/post/start_game?black=${black_id}&white=${white_id}&hande=${hande}`)
         console.log(res)
-        return res
+        return res.data
     } catch (err) {
         console.log("err:", err)
     }
@@ -112,35 +112,15 @@ export const postResult = async (game_id, result) => {
 
 
 export const getRateFromId = async () => {
-    return sendTokenGet(baseUrl + `/get/rate`)
-    // try {
-    //     const res = await axios.get(baseUrl + `/get/rate`)
-    //     console.log(res)
-    //     return res
-    // } catch (err) {
-    //     console.log("err:", err)
-    // }
+    return await sendTokenGet(baseUrl + `/get/rate`)
 }
 
 export const getAllRate = async () => {
-    return sendTokenGet(baseUrl + `/get/rate`)
-    // try {
-    //     const res = await axios.get(baseUrl + `/get/rate_hist`)
-    //     console.log(res)
-    //     return res
-    // } catch (err) {
-    //     console.log("err:", err)
-    // }
+    return await sendTokenGet(baseUrl + `/get/rate_list`)
 }
 
 export const getResult = async () => {
-    try {
-        const res = await axios.get(baseUrl + `/get/result`)
-        console.log(res)
-        return res
-    } catch (err) {
-        console.log("err:", err)
-    }
+    return await sendTokenGet(baseUrl + `/get/result`)
 }
 
 export const getRecordPath = async (game_id, turn) => {
@@ -155,20 +135,14 @@ export const getRecordPath = async (game_id, turn) => {
 }
 
 export const getName = async () => {
-    try {
-        const res = await axios.get(baseUrl + `/get/name`)
-        console.log(res)
-        return res
-    } catch (err) {
-        console.log("err:", err)
-    }
+    return await sendTokenGet(baseUrl + `/get/name`)
 }
 
 export const getAllName = async () => {
     try {
         const res = await axios.get(baseUrl + `/get/all_name`)
-        console.log(res)
-        return res
+        console.log(res.data)
+        return res.data
     } catch (err) {
         console.log("err:", err)
     }

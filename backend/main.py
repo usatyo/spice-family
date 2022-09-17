@@ -97,10 +97,11 @@ def _(
 def _(
     black: str,
     white: str,
+    hande: int,
 ):
     if not id_in_sql(black) or not id_in_sql(white):
         return {"error": "non-exist user_id"}
-    game_id = new_game(black, white)
+    game_id = new_game(black, white, hande)
     return {"game_id": game_id}
 
 
