@@ -1,6 +1,7 @@
 import { AspectRatio, Heading, Spacer, VStack } from '@chakra-ui/react';
 import { Box, Button, HStack, Stack, Flex, Text, Center, Image, Radio, RadioGroup, NumberInput, NumberInputField, NumberDecrementStepper, NumberIncrementStepper, NumberInputStepper } from "@chakra-ui/react";
 import React, { useRef, useState, useCallback } from 'react';
+import Select from 'react-select'
 import './../App.css';
 import '../styles/Prepare.css';
 import img from './../assets/prepare.png';
@@ -14,6 +15,9 @@ const videoConstraints = {
 };
 
 const Prepare = () => {
+    //create string array
+    const playerData = [{ value: '0', label: 'playerA' }, { value: '1', label: 'playerB' }, { value: '2', label: 'playerC' }, { value: '3', label: 'playerD' }];
+    const [enemyID, setEnemyID] = React.useState(playerData[0][1]);//対戦相手を選択
     const [handeMode, setHandeMode] = React.useState("0");
     const [startLeft, setStartLeft] = React.useState("true");
     const [motijikan, setMatijikan] = React.useState("40");
@@ -59,6 +63,16 @@ const Prepare = () => {
 
                     <Stack direction='row' spacing="30px">
                         <VStack spacing="30px" w="50%">
+                            {/* 対局相手の枠 */}
+                            <Box p={6} paddingRight={10} transition="0.5s" bg="white" shadow="xl" rounded="40px" margin={"0%"} w="full">
+                                <div className='Title2'>対局相手</div>
+                                <Stack direction='row'>
+                                    <div className='normal'>・対戦相手を選択(右に座ってください)</div>
+                                    <Spacer />
+                                    <Select defaultValue={playerData[0]} w="200px" options={playerData} value={enemyID} onChange={setEnemyID}>
+                                    </Select>
+                                </Stack>
+                            </Box>
                             {/* 時間設定の枠 */}
                             <Box p={6} paddingRight={10} transition="0.5s" bg="white" shadow="xl" rounded="40px" margin={"0%"} w="full">
                                 <div className='Title2'>時間設定</div>
@@ -102,6 +116,7 @@ const Prepare = () => {
                                 <div className='Title2'>先手</div>
                                 {senteRadio(setStartLeft, startLeft)}
                             </Box>
+
                         </VStack>
                         <VStack spacing="30px" w="50%">
                             {/* ハンデ設定の枠 */}
@@ -131,7 +146,7 @@ const Prepare = () => {
                         </VStack>
 
                     </Stack>
-                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone) }}>
+                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone), en: enemyID }}>
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>
@@ -158,9 +173,9 @@ function handeRadio(setHandeMode, handeMode) {
 function senteRadio(setStartLeft, startLeft) {
     return <RadioGroup onChange={setStartLeft} value={startLeft}>
         <Stack direction='row'>
-            <Radio size='lg' value={'true'}>左のプレイヤー</Radio>
+            <Radio size='lg' value={'true'}>左のプレイヤー(ログイン中のユーザ)</Radio>
             <Spacer />
-            <Radio size='lg' value={'false'}>右のプレイヤー</Radio>
+            <Radio size='lg' value={'false'}>右のプレイヤー(対戦相手)</Radio>
         </Stack>
     </RadioGroup>;
 }

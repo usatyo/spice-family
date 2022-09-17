@@ -4,7 +4,6 @@ import { auth } from "../Firebase.js";
 
 const baseUrl = "http://localhost:8000"
 
-
 const errorHandling = (error) => {
     console.log(error.response.data)
     console.log(error.response.status)

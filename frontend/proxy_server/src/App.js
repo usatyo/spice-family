@@ -7,6 +7,9 @@ import Home from './pages/Home'
 import Timer from './pages/Timer'
 import Result from './pages/Result'
 import Prepare from './pages/Prepare'
+import Register from './pages/Register'
+import Login from './pages/Login'
+import History from './pages/History'
 import Record from './pages/Record'
 import AppContextProvider from './contexts/AppContext';
 
@@ -19,6 +22,9 @@ function App() {
         <Route path='/timer' element={<Timer />} />
         <Route path='/result' element={<Result />} />
         <Route path='/prepare' element={<Prepare />} />
+        <Route path='/register' element={<Register />} />
+        <Route path='/login' element={<Login />} />
+        <Route path='/history' element={<History />} />
         <Route path='/record' element={<Record />} />
       </Routes>
     </BrowserRouter>
