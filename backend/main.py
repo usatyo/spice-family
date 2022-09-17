@@ -50,21 +50,6 @@ initialize()
 app = FastAPI()
 
 
-def get_current_user(cred: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
-    try:
-        decoded_token = auth.verify_id_token(cred.credentials)
-    except:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid authentication credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
-
-    user = decoded_token["firebase"]["identities"]
-
-    return user
-
-
 origins = [
     "http://localhost:3000",
     "http://localhost",
