@@ -52,37 +52,37 @@ const Register = () => {
                 <Navigate to={`/`} />
             ) : (
                 <>
-                    <Box className="App" bg={'#e9e9e9'}>
-                        <Stack h='full' w='full'>
-                            <Center>
-                                <Box w={450} bg={"white"} p={8}>
-                                    <Text fontSize={25} mb={10}>新規登録</Text>
-                                    <Spacer></Spacer>
-                                    <FormControl onSubmit={handleSubmit} mb={6}>
-                                        <FormLabel>メールアドレス</FormLabel>
-                                        <Input
-                                            name="email"
-                                            type="email"
-                                            value={registerEmail}
-                                            onChange={(e) => setRegisterEmail(e.target.value)}
-                                        />
-                                    </FormControl>
-                                    <FormControl>
-                                        <FormLabel>パスワード</FormLabel>
-                                        <Input
-                                            name="password"
-                                            type="password"
-                                            value={registerPassword}
-                                            onChange={(e) => setRegisterPassword(e.target.value)}
-                                        />
-                                    </FormControl>
-                                    <Button w={40} mt={10} mb={10}>登録する</Button>
-                                    <Spacer></Spacer>
-                                </Box>
-                            </Center>
-                            <Text>ログインは<Link to={`/login/`}>こちら</Link></Text>
-                        </Stack>
-                    </Box>
+                    <div className="App" >
+                        <header className="App-header">
+                            <VStack w="25%" h="40%" margin="auto" paddingTop="30px" paddingBottom="30px" bg="white" rounded={25}>
+                                <Text fontSize={30} paddingBottom="20px">Register</Text>
+                                    <form>
+                                        <FormControl isRequired paddingBottom="10px">
+                                            <FormLabel>メールアドレス</FormLabel>
+                                            <Input
+                                                name="email"
+                                                type="email"
+                                                value={registerEmail}
+                                                onChange={(e) => setRegisterEmail(e.target.value)}
+                                            />
+                                        </FormControl>
+                                        <FormControl isRequired paddingBottom="20px">
+                                            <FormLabel>パスワード</FormLabel>
+                                            <Input
+                                                name="password"
+                                                type="password"
+                                                value={registerPassword}
+                                                onChange={(e) => setRegisterPassword(e.target.value)}
+                                            />
+                                        </FormControl>
+                                        <Button width="full" marginTop="4px" type="submit" onClick={handleSubmit}>ログイン</Button>
+                                    </form>
+                                <Link to={`/login/`}>
+                                    <Text fontSize={14} paddingTop="10px">ログインはこちら</Text>
+                                </Link>
+                            </VStack>
+                        </header>
+                    </div>
                 </>
             )}
         </>
