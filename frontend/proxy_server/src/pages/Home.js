@@ -38,7 +38,7 @@ const Home = () => {
                             <div className="App" >
                                 <header className="App-header">
                                     <VStack>
-                                        <Button onClick={logout}>ログアウト</Button>
+                                        <Button bg={"white"} shadow="lg" roundedLeft="25px" w="10%" marginLeft="auto" onClick={logout}>ログアウト</Button>
                                         <HStack p="40px" paddingRight="0" w="full" spacing={10}>
                                             {/*左側の部分  */}
                                             <Stack w="40%" h="full" paddingTop="40px" paddingRight="50px" paddingLeft="50px" >
@@ -67,7 +67,7 @@ const Home = () => {
                                             </Stack>
 
                                             {/*右側の部分  */}
-                                            <Stack bg={" white"} shadow="lg" roundedLeft="25px" w="60%">
+                                            <Stack bg={"white"} shadow="lg" roundedLeft="25px" w="60%">
                                                 <HStack>
                                                     <Box w="350px" bg="blue.400" roundedBottomRight="25px" roundedTopLeft="25px">
                                                         <Text p="10px" fontSize="20px" fontWeight="bold" color="white">プレイヤーのレーティング推移</Text>

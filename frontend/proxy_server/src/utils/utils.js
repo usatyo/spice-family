@@ -2,7 +2,6 @@ import axios from "axios"
 
 const baseUrl = "http://localhost:8000"
 
-
 export const postNameAndId = async (user_id, name) => {
   try {
     const res = await axios.post(baseUrl + `/post/name?user_id=${user_id}&name=${name}`)
