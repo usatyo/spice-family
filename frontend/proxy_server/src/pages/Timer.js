@@ -132,8 +132,8 @@ const Timer = () => {
 
   useEffect(() => {
     const func = async () => {
-    //   setBoardImg(await postMove(game_id, url))
-        console.log(postName("takashi"))
+      //   setBoardImg(await postMove(game_id, url))
+      console.log(postName("takashi"))
     }
     func()
   }, [])
@@ -169,7 +169,7 @@ const Timer = () => {
           />
           {url && (
             <>
-              <Box w="100px">
+              <Box w="0px">
                 <img src={url} alt="Screenshot" />
               </Box>
             </>
