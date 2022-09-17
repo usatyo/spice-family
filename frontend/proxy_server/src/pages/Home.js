@@ -38,7 +38,7 @@ const Home = () => {
                         <>
                             <div className="App" >
                                 <header className="App-header">
-                                    <Button bg={"white"} shadow="lg" roundedLeft="25px" w="10%" marginLeft="auto" onClick={logout}>ログアウト</Button>
+                                    <Button bg={"white"} roundedLeft="25px" w="10%" marginLeft="auto" onClick={logout}>ログアウト</Button>
                                     <Stack p="40px" paddingRight="0" w="full" spacing={10} flexDirection="row">
                                         {/*左側の部分  */}
                                         <Stack w="40%" h="full" paddingTop="40px" paddingRight="50px" paddingLeft="50px" >
