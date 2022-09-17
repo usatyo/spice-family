@@ -1,12 +1,20 @@
 import MySQLdb
 import datetime
+import os
 
 BOARD = 19
-PALAMS = {"host": "localhost", "user": "root", "passwd": "root", "db": "python_db"}
 
+DATABASES = {
+    'default': {
+        'name': os.environ.get('DATABASE_NAME'),
+        'user':  os.environ.get('DATABASE_USER'),
+        'password': os.environ.get('DATABASE_PASSWORD'),
+        'host':  os.environ.get('DATABASE_HOST'),
+    }
+}
 
 def initialize():
-    connection = MySQLdb.connect(**PALAMS)
+    connection = MySQLdb.connect(**DATABASES["default"])
     cursor = connection.cursor()
     cursor.execute("DROP TABLE IF EXISTS user_info")
     cursor.execute("DROP TABLE IF EXISTS rate_hist")

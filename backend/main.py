@@ -54,6 +54,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://localhost",
+    "https://prokishi-serve.herokuapp.com/",
     # TODO: フロントエンドデプロイしたらそのURLも入れる
 ]
 
@@ -222,3 +223,7 @@ def _(
         return {"error": "Invalid game_id or invalid turn"}
     gen_boardimg(state)
     return FileResponse("files/output.jpg")
+
+
+
+
