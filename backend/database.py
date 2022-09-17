@@ -1,4 +1,3 @@
-from curses import keyname
 import MySQLdb
 import datetime
 
@@ -23,13 +22,13 @@ def initialize():
     )
 
     # テスト用
-    cursor.execute(
-        """INSERT INTO user_info (user_id, name)
-        VALUES ('aaa', 'takashi'),
-        ('bbb', 'hiroshi'),
-        ('ccc', 'takoshi')
-        """
-    )
+    # cursor.execute(
+    #     """INSERT INTO user_info (user_id, name)
+    #     VALUES ('aaa', 'takashi'),
+    #     ('bbb', 'hiroshi'),
+    #     ('ccc', 'takoshi')
+    #     """
+    # )
 
     cursor.execute(
         """CREATE TABLE rate_hist(
@@ -42,13 +41,13 @@ def initialize():
     )
 
     # テスト用
-    cursor.execute(
-        """INSERT INTO rate_hist (user_id, rate, time)
-        VALUES ('aaa', '1500', '2020-01-19 05:14:07'),
-        ('bbb', '1600', '2021-02-19 04:14:01'),
-        ('ccc', '1700', '2021-03-29 03:43:23')
-        """
-    )
+    # cursor.execute(
+    #     """INSERT INTO rate_hist (user_id, rate, time)
+    #     VALUES ('aaa', '1500', '2020-01-19 05:14:07'),
+    #     ('bbb', '1600', '2021-02-19 04:14:01'),
+    #     ('ccc', '1700', '2021-03-29 03:43:23')
+    #     """
+    # )
 
     cursor.execute(
         """CREATE TABLE game_result(
@@ -103,9 +102,6 @@ def get_all_pair():
 def get_current_rate(id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
-
-    # TODO get latest rate
-
     cursor.execute(
         """SELECT * FROM rate_hist WHERE user_id=%s 
         ORDER BY id DESC LIMIT 1""",
