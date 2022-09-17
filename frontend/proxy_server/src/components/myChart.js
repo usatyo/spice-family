@@ -28,6 +28,7 @@ const MyChart = () => {
         data: [5.6, 7.2, 10.6, 13.6, 20, 21.8, 24.1, 28.4, 25.1, 19.4, 13.1, 8.5],
         backgroundColor: 'rgba(30, 144, 255, 1)',
         label: 'レート',
+        maintainAspectRatio: false
       },
     ],
   };
@@ -68,7 +69,10 @@ const MyChart = () => {
   return (
     <div>
       {/* グラフコンポーネントの呼び出し */}
+
       <Line data={graphData} options={graphOption} />
+
+
     </div>
   );
 }
