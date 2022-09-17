@@ -82,7 +82,7 @@ async def id(token_test=Depends(get_current_user)):
 
 @app.post("/post/name")
 def _(
-    # name: str,
+    name: str,
     token=Depends(get_current_user),
 ):
     name = "takashi"

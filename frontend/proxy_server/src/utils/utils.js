@@ -2,7 +2,7 @@ import axios from "axios"
 import { signOut } from 'firebase/auth';
 import { auth } from "../Firebase.js";
 
-const baseUrl = "http://localhost:8000"
+const baseUrl = "https://prokishi-serve.herokuapp.com"
 
 const errorHandling = (error) => {
     console.log(error.response.data)

@@ -4,17 +4,16 @@ import os
 
 BOARD = 19
 
-DATABASES = {
-    'default': {
-        'name': os.environ.get('DATABASE_NAME'),
-        'user':  os.environ.get('DATABASE_USER'),
-        'password': os.environ.get('DATABASE_PASSWORD'),
-        'host':  os.environ.get('DATABASE_HOST'),
-    }
+PALAMS = {
+    "database": os.environ.get("DB_NAME"),
+    "user": os.environ.get("DB_USERNAME"),
+    "password": os.environ.get("DB_PASSWORD"),
+    "host": os.environ.get("DB_HOSTNAME"),
 }
 
+
 def initialize():
-    connection = MySQLdb.connect(**DATABASES["default"])
+    connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute("DROP TABLE IF EXISTS user_info")
     cursor.execute("DROP TABLE IF EXISTS rate_hist")
@@ -29,15 +28,6 @@ def initialize():
         )"""
     )
 
-    # テスト用
-    # cursor.execute(
-    #     """INSERT INTO user_info (user_id, name)
-    #     VALUES ('aaa', 'takashi'),
-    #     ('bbb', 'hiroshi'),
-    #     ('ccc', 'takoshi')
-    #     """
-    # )
-
     cursor.execute(
         """CREATE TABLE rate_hist(
         id INT(11) AUTO_INCREMENT NOT NULL,
@@ -47,15 +37,6 @@ def initialize():
         PRIMARY KEY (id)
         )"""
     )
-
-    # テスト用
-    # cursor.execute(
-    #     """INSERT INTO rate_hist (user_id, rate, time)
-    #     VALUES ('aaa', '1500', '2020-01-19 05:14:07'),
-    #     ('bbb', '1600', '2021-02-19 04:14:01'),
-    #     ('ccc', '1700', '2021-03-29 03:43:23')
-    #     """
-    # )
 
     cursor.execute(
         """CREATE TABLE game_result(
@@ -68,16 +49,6 @@ def initialize():
         PRIMARY KEY (game_id)
         )"""
     )
-
-    # テスト用
-    # cursor.execute(
-    #     """INSERT INTO game_result (black, white, result, time)
-    #     VALUES ('aaa', 'bbb', '-1', '2020-01-19 05:14:07'),
-    #     ('aaa', 'ccc', '0', '2020-01-19 05:14:07'),
-    #     ('bbb', 'ccc', '1', '2020-01-19 05:14:07'),
-    #     ('aaa', 'bbb', '-1', '2020-01-19 05:14:07')
-    #     """
-    # )
 
     cursor.execute(
         """CREATE TABLE game_record_store(
