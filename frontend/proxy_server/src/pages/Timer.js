@@ -77,19 +77,21 @@ var kouryokaisuu = 0;
 var hande = 0;
 var startLeft = false;
 var stoneAdv = 0;
+var enemyID = "";
 
 
 
 const Timer = () => {
   //ゲーム設定
   const location = useLocation();
-  const { m, b, kk, h, s, ad } = location.state;
+  const { m, b, kk, h, s, ad, en } = location.state;
   motijikan = m * 60;
   byoyomi = b;
   kouryokaisuu = kk;
   hande = h;
   startLeft = s;
-  stoneAdv = ad;
+  stoneAdv = ad;//ハンデ戦で先においた石の数
+  enemyID = en;//敵プレイヤーのID
   const { game_id } = useContext(AppContext)
 
   var leftBadge, rightBadge;
