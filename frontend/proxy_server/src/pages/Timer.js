@@ -362,22 +362,31 @@ export default Timer
 function endModal(isOpen, onClose, playState) {
   return <Modal isOpen={isOpen} onClose={onClose}>
     <ModalOverlay />
-    <ModalContent>
+    <ModalContent >
       <ModalHeader>終了しますか?</ModalHeader>
       <ModalCloseButton />
       <ModalBody>
-        {(playState == "left") ? "左" : "右"}側のプレイヤーの敗北となります。
+        対局結果を選択してください。
       </ModalBody>
       <ModalFooter>
-        <Button variant='ghost' onClick={onClose}>続ける</Button>
-        <Link to="/result" state={{ ad: stoneAdv }}>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 2 }}>
           <Button colorScheme='blue' mr={3}>
-            終了する
+            左の勝利
           </Button>
         </Link>
-      </ModalFooter>
-    </ModalContent>
-  </Modal>;
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 1 }}>
+          <Button variant="outline" colorScheme='blue' mr={3}>
+            引き分け
+          </Button>
+        </Link>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 0 }}>
+          <Button colorScheme='blue' mr={3}>
+            右の勝利
+          </Button>
+        </Link>
+      </ModalFooter >
+    </ModalContent >
+  </Modal >;
 }
 
 
@@ -391,7 +400,7 @@ function endTimeUpModal(isOpen, onClose, playState) {//閉じれないように�
         {(playState == "left") ? "左" : "右"}側のプレイヤーの敗北となります。
       </ModalBody>
       <ModalFooter>
-        <Link to="/result" state={{ ad: stoneAdv }}>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: (playState == "left") ? 0 : 2 }}>
           <Button colorScheme='blue' mr={3}>
             終了する
           </Button>
