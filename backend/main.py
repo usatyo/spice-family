@@ -90,14 +90,16 @@ async def root():
 @app.get("/sample")
 async def id(token_test=Depends(get_current_user)):
     uid = token_test["uid"]
+    print(uid)
     return [uid]
 
 
 @app.post("/post/name")
 def _(
-    name: str,
+    # name: str,
     token=Depends(get_current_user),
 ):
+    name = "takashi"
     user_id = token["uid"]
     if name_in_sql(name) or not name:
         return {"error": "exist same name"}

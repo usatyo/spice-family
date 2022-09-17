@@ -45,36 +45,40 @@ const errorHandling = (error) => {
 
 const sendTokenGet = async (query) => {
     const idToken = localStorage.getItem('token')
-    try {
-        const res = await axios.get(query, {
-            headers: {
-                Authorization: `Bearer ${idToken}`,
-                body: 'Hi, everyone!'
-            }
-        })
-        return res
-    } catch (error) {
+    console.log(idToken)
+    const res = await axios.get(query, {
+        headers: {
+            Authorization: `Bearer ${idToken}`,
+            body: 'Hi, everyone!'
+        }
+    }).then((res) => {
+        return res.data
+    }).catch((error) => {
         errorHandling(error)
-    }
+    })
+    return res
 }
 
 const sendTokenPost = async (query) => {
     const idToken = localStorage.getItem('token')
-    try {
-        const res = await axios.post(query, {
-            headers: {
-                Authorization: `Bearer ${idToken}`,
-                body: 'Hi, everyone!'
-            }
-        })
-        return res
-    } catch (error) {
+    console.log(idToken)
+    const res = await axios.post(query, {
+        headers: {
+            Authorization: `Bearer ${idToken}`,
+            body: 'Hi, everyone!'
+        }
+    }).then((res) => {
+        return res.data
+    }).catch((error) => {
         errorHandling(error)
-    }
+    })
+    return res
 }
 
-export const postNameAndId = async (name) => {
-    return sendTokenPost(baseUrl + `/post/name?name=${name}`)
+export const postName = async (name) => {
+    console.log("call postName")
+    // return await sendTokenPost(baseUrl + `/post/name?name=${name}`)
+    return await sendTokenGet(baseUrl + `/sample`)
 }
 
 export const postNewGame = async (black_id, white_id) => {
