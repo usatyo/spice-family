@@ -17,7 +17,7 @@ const videoConstraints = {
 
 const Prepare = () => {
     //create string array
-    const [playerData, setPlayerData] = useState([{value: "-", label: "-"}])
+    const [playerData, setPlayerData] = useState([{ value: "-", label: "-" }])
     const [enemyID, setEnemyID] = React.useState(playerData[0].label);//対戦相手を選択
     const [handeMode, setHandeMode] = React.useState("0");
     const [startLeft, setStartLeft] = React.useState("true");
@@ -176,8 +176,8 @@ export default Prepare
 function handeRadio(setHandeMode, handeMode) {
     return <RadioGroup onChange={setHandeMode} value={handeMode}>
         <Stack direction='column'>
-            <Radio size='lg' value={'0'}>互戦</Radio>
-            <Radio size='lg' value={'1'}>定戦</Radio>
+            <Radio size='lg' value={'0'}>互先</Radio>
+            <Radio size='lg' value={'1'}>定先</Radio>
             <Radio size='lg' value={'2'}>ハンデ戦</Radio>
         </Stack>
     </RadioGroup>;
