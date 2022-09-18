@@ -14,7 +14,7 @@ const Record = () => {
   useEffect(() => {
     postNewGame("aaa", "bbb")
     const func = async () => {
-      setRecordImg(await getRecordPath(1, turn))
+      setRecordImg(await getRecordPath(4, turn))
     }
     func()
   }, [])
