@@ -6,6 +6,7 @@ import NumberEasing from 'react-number-easing';
 import React, { useState } from 'react';
 import './../App.css';
 import '../styles/Result.css';
+import { getRateFromId } from '../utils/utils';
 
 
 const upIcon = <TriangleUpIcon w="50px" h="50px" color="red.500" />;
@@ -13,11 +14,12 @@ const downIcon = <TriangleDownIcon w="50px" h="50px" color="blue.500" />;
 
 const Result = () => {
     const location = useLocation();
-    const { ad, leftResult } = location.state;//ad:ハンデ戦の際に置いた置いた石の数(int型) leftResult:左側のプレイヤーの勝敗(0:負け, 1:引き分け, 2:勝ち)
-    var oldLeftScore = 1532;//試合前の左側のレーティング
-    var oldRightScore = 1600;//試合前の右側のレーティング
-    var newleftScore = 1532;//試合後の左側のレーティング
-    var newrightScore = 1600;//試合後の右側のレーティング
+
+    const { ad, leftResult, enemyID } = location.state;//ad:ハンデ戦の際に置いた置いた石の数(int型) leftResult:左側のプレイヤーの勝敗(0:負け, 1:引き分け, 2:勝ち)
+    var oldLeftScore = 1500;//試合前の左側のレーティング
+    var oldRightScore = 1500;//試合前の右側のレーティング
+    var newleftScore = 1545;//試合後の左側のレーティング
+    var newrightScore = 1454;//試合後の右側のレーティング
     var [leftScore, setLeftScore] = useState(oldLeftScore);
     var [rightScore, setRightScore] = useState(oldRightScore);
     let leftDist = newleftScore - oldLeftScore;
