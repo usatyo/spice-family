@@ -148,8 +148,8 @@ def update_result(game_id, result):
     )
     connection.commit()
     connection.close()
-    black, white = get_black_white(game_id)
-    return black, white
+    black, white, hande = get_black_white(game_id)
+    return black, white, hande
 
 
 def get_all_result(id):
@@ -275,13 +275,13 @@ def get_black_white(game_id):
     connection = MySQLdb.connect(**PALAMS)
     cursor = connection.cursor()
     cursor.execute(
-        "SELECT black, white FROM game_result WHERE game_id=%s", [(str(game_id))]
+        "SELECT black, white, hande FROM game_result WHERE game_id=%s", [(str(game_id))]
     )
     datas = cursor.fetchall()[0]
-    black, white = datas[0], datas[1]
+    black, white, hande = datas[0], datas[1], datas[2]
     connection.commit()
     connection.close()
-    return black, white
+    return black, white, hande
 
 
 def register_corner(game_id, x, y):

@@ -83,9 +83,8 @@ async def id(token_test=Depends(get_current_user)):
 @app.post("/post/name")
 def _(
     name: str,
-    token=Depends(get_current_user),
+    token = Depends(get_current_user),
 ):
-    name = "takashi"
     user_id = token["uid"]
     if name_in_sql(name) or not name:
         return {"error": "exist same name"}
@@ -164,13 +163,13 @@ def _(
 ):
     if result < -1 or 1 < result:
         return {"error": "invalid result"}
-    black, white = update_result(game_id, result)
+    black, white, hande = update_result(game_id, result)
     b_rate = get_current_rate(black)[0]["rate"]
     w_rate = get_current_rate(white)[0]["rate"]
     if result == 1:
-        b_rate, w_rate = calc_rate(b_rate, w_rate, 0)
+        b_rate, w_rate = calc_rate(b_rate, w_rate, hande)
     elif result == -1:
-        w_rate, b_rate = calc_rate(w_rate, b_rate, 0)
+        w_rate, b_rate = calc_rate(w_rate, b_rate, hande * (-1))
 
     update_rate(black, b_rate)
     update_rate(white, w_rate)
