@@ -7,17 +7,30 @@
 
 #### デザイン
 
-- 対局時計デザイン  
+- ホーム
+
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/63779824/190916171-d4187764-f320-405d-93eb-e83ae0693e81.png">
+<br><br>
+
+- 準備ページ
+
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/63779824/190916239-1b1a78e3-0d81-4ff5-8225-2fffddc028b9.png">
+<br><br>
+
+- 対局時計ページ
+
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/63779824/190916262-0cc30dc8-4b6a-456b-8b5e-b6eb5174fa40.png">
+<br><br>
+
+- 結果表示ページ
     
-  <img width="500" alt="timer" src="https://user-images.githubusercontent.com/63779824/181445220-0b714002-34bb-471c-8c03-9da0d68c12ec.png">
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/63779824/190916295-4909964e-4279-42be-8368-217428b5937c.png">
+<br><br>
 
-  <br><br>
+- 棋譜確認ページ
 
-- 結果表示デザイン  
-    
-  <img width="500" alt="result" src="https://user-images.githubusercontent.com/63779824/181445297-b60a252f-736b-47aa-aa35-43a0f90d2c3d.png">
-
-  <br><br>
+<img width="800" alt="image" src="https://user-images.githubusercontent.com/63779824/190916355-68f9d090-1f2e-49e5-a681-8342701f0ae4.png">
+<br><br>
 
 ### バックエンド
 
