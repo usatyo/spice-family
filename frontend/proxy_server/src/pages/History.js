@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import axios from 'axios';
 import { signOut } from 'firebase/auth';
 
+const baseUrl = "https://prokishi-serve.herokuapp.com"
 
 const History = () => {
     const [cats, setCats] = useState("");
@@ -12,7 +13,7 @@ const History = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        axios.get('http://127.0.0.1:8000/').then(response => {
+        axios.get(baseUrl + "/").then(response => {
             console.log(response)
             console.log(response.data)
             setCats(response.data);
@@ -24,7 +25,7 @@ const History = () => {
         const idToken = localStorage.getItem('token')
         console.log(idToken)
         console.log("nnnnnnnnnnnn")
-        axios.get('http://127.0.0.1:8000/' + 'me', {
+        axios.get(baseUrl + '/sample', {
             headers: {
                 Authorization: `Bearer ${idToken}`,
                 body: 'Hi, everyone!'

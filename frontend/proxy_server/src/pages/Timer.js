@@ -133,7 +133,7 @@ const Timer = () => {
   useEffect(() => {
     const func = async () => {
       //   setBoardImg(await postMove(game_id, url))
-      console.log(await postName("takashi"))
+      console.log(await postName("natsumi"))
     }
     func()
   }, [])

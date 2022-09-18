@@ -33,6 +33,10 @@ const Prepare = () => {
         func()
     }, [])
 
+    const handleClick = async () => {
+        await postNewGame("aaa", "bbb", 0)
+    }
+
     //カメラ関連
     const webcamRef = useRef(null);
     return (
@@ -155,7 +159,7 @@ const Prepare = () => {
                         </VStack>
 
                     </Stack>
-                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone), en: enemyID }} onClick={() => {postNewGame("aaa", "bbb")}}>
+                    <Link to="/timer" state={{ m: parseInt(motijikan), b: parseInt(byoyomi), kk: parseInt(kouryokaisuu), h: parseInt(handeMode), s: (startLeft == "true"), ad: parseInt(stone), en: enemyID }} onClick={handleClick}>
                         <Button colorScheme="blue" variant="solid" w="100%" h="80px" borderRadius="40px" >
                             <Text fontSize="2xl" fontWeight="bold" colorScheme="blue">対局開始</Text>
                         </Button>
