@@ -80,14 +80,16 @@ async def id(token_test=Depends(get_current_user)):
     return [uid]
 
 
-@app.post("/post/name")
+@app.post("/post/name/{name}")
 def _(
     name: str,
     token = Depends(get_current_user),
 ):
     user_id = token["uid"]
-    if name_in_sql(name) or not name:
+    if name_in_sql(name):
         return {"error": "exist same name"}
+    if not name:
+        return {"error": "no name"}
     register_user(user_id, name)
     return
 
