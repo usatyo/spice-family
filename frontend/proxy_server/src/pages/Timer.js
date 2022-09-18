@@ -374,17 +374,17 @@ function endModal(isOpen, onClose, playState) {
         対局結果を選択してください。
       </ModalBody>
       <ModalFooter>
-        <Link to="/result" state={{ ad: stoneAdv, leftResult: 2 }}>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 2, enemyID: enemyID }}>
           <Button colorScheme='blue' mr={3}>
             左の勝利
           </Button>
         </Link>
-        <Link to="/result" state={{ ad: stoneAdv, leftResult: 1 }}>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 1, enemyID: enemyID }}>
           <Button variant="outline" colorScheme='blue' mr={3}>
             引き分け
           </Button>
         </Link>
-        <Link to="/result" state={{ ad: stoneAdv, leftResult: 0 }}>
+        <Link to="/result" state={{ ad: stoneAdv, leftResult: 0, enemyID: enemyID }}>
           <Button colorScheme='blue' mr={3}>
             右の勝利
           </Button>
