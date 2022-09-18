@@ -83,7 +83,7 @@ const Home = () => {
                                                     </Button>
                                                 </Link>
                                             </HStack>
-                                            <Text p="4px" fontSize="20px" textAlign={"left"} color="gray.400">Created by SpiceFamily</Text>
+                                            <Text p="4px" fontSize="sm" textAlign={"left"} color="gray.400">Created by SpiceFamily</Text>
                                         </Stack>
 
                                         {/*右側の部分  */}
