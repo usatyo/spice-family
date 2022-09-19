@@ -54,8 +54,7 @@ app = FastAPI()
 origins = [
     "http://localhost:3000",
     "http://localhost",
-    "https://prokishi-serve.herokuapp.com/",
-    # TODO: フロントエンドデプロイしたらそのURLも入れる
+    "https://spice-test-project-d3472.web.app",
 ]
 
 app.add_middleware(
