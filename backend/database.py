@@ -322,8 +322,10 @@ def register_user(id, name):
     cursor.execute(
         """INSERT INTO user_info (user_id, name)
         VALUES (%s, %s)
+        ON DUPLICATE KEY UPDATE
+        user_id = %s, name = %s
         """,
-        [(id), (name)],
+        [(id), (name), (id), (name)],
     )
     connection.commit()
     connection.close()

@@ -61,7 +61,7 @@ const sendTokenGet = async (query) => {
 const sendTokenPost = async (query) => {
     const idToken = localStorage.getItem('token')
     console.log(idToken)
-    const res = await axios.post(query, {
+    const res = await axios.post(query, {}, {
         headers: {
             Authorization: `Bearer ${idToken}`,
             body: 'Hi, everyone!'
@@ -75,7 +75,7 @@ const sendTokenPost = async (query) => {
 }
 
 export const postName = async (name) => {
-    return await sendTokenPost(baseUrl + `/post/name?name=${name}`)
+    return await sendTokenPost(baseUrl + `/post/name/${name}`)
 }
 
 export const postNewGame = async (black_id, white_id, hande) => {
