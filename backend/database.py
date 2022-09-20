@@ -48,6 +48,14 @@ def initialize():
     )
 
     cursor.execute(
+        """INSERT INTO rate_hist (user_id, rate, time)
+        VALUES ('aaa', '1600', '2022-09-20 05:44:18'),
+        ('bbb', '1400', '2022-09-20 05:44:18'),
+        ('ccc', '1450', '2022-09-20 05:44:18')
+        """
+    )
+
+    cursor.execute(
         """CREATE TABLE game_result(
         game_id INT(11) AUTO_INCREMENT NOT NULL,
         black VARCHAR(30) NOT NULL COLLATE utf8mb4_unicode_ci,

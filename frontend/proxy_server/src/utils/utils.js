@@ -55,7 +55,7 @@ const sendTokenGet = async (query) => {
     }).catch((error) => {
         errorHandling(error)
     })
-    return res.data
+    return res
 }
 
 const sendTokenPost = async (query) => {
@@ -71,7 +71,7 @@ const sendTokenPost = async (query) => {
     }).catch((error) => {
         errorHandling(error)
     })
-    return res.data
+    return res
 }
 
 export const postName = async (name) => {
@@ -114,7 +114,7 @@ export const getRateFromId = async () => {
 }
 
 export const getAllRate = async () => {
-    return await sendTokenGet(baseUrl + `/get/rate_list`)
+    return await sendTokenGet(baseUrl + `/get/rate_hist`)
 }
 
 export const getResult = async () => {
@@ -129,6 +129,7 @@ export const getRecordPath = async (game_id, turn) => {
         return url.createObjectURL(blob)
     } catch (err) {
         console.log("err:", err)
+        return null
     }
 }
 

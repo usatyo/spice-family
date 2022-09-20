@@ -1,21 +1,21 @@
 import { Line } from 'react-chartjs-2'
 import { Chart, registerables } from "chart.js"
-import { rateList } from '../utils/api'
+// import { rateList } from '../utils/api'
 // コメントアウト部分はAPIによるレート取得
-// import { getAllRate, getRateFromId } from '../utils/utils'
-// import { useEffect, useState } from 'react'
+import { getAllRate } from '../utils/utils'
+import { useEffect, useState } from 'react'
 
 Chart.register(...registerables)
 
 const MyChart = () => {
-    // const [rateList, setRateList] = useState({})
+    const [rateList, setRateList] = useState({})
 
-    // useEffect(() => {
-    //     const func = async () => {
-    //         setRateList(await getAllRate())
-    //     }
-    //     func()
-    // }, [])
+    useEffect(() => {
+        const func = async () => {
+            setRateList(await getAllRate())
+        }
+        func()
+    }, [])
 
     let begin = new Date()
     let end = new Date();
@@ -31,6 +31,7 @@ const MyChart = () => {
     }
 
     const data = Object.values(rateList).slice(-30)
+    console.log(data)
 
     const graphData = {
         labels: labels,
