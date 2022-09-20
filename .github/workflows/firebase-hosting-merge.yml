@@ -11,10 +11,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - run: yarn ci && yarn deploy
+      - run: yarn install && yarn build
+        working-directory: ./frontend/proxy_server
+        env:
+          CI: false
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_SPICE_TEST_PROJECT_D3472 }}'
           channelId: live
           projectId: spice-test-project-d3472
+          entryPoint: "./frontend/proxy_server"
