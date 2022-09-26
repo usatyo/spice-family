@@ -2,12 +2,12 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
-    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
-    appId: process.env.REACT_APP_FIREBASE_APP_ID
+    apiKey: "AIzaSyANBVeCVIfwP6MEW9ClkBpa78_AySmR0vY",
+    authDomain: "spice-test-project-d3472.firebaseapp.com",
+    projectId: "spice-test-project-d3472",
+    storageBucket: "spice-test-project-d3472.appspot.com",
+    messagingSenderId: "890569156104",
+    appId: "1:890569156104:web:5388ac9294795e9924d3bd"
 };
 
 const app = initializeApp(firebaseConfig);
