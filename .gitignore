@@ -1,5 +1,6 @@
 .env
 .venv
+.DS_Store
 __pycache__/
 
 spice-test-project-d3472-firebase-adminsdk-o3avo-292ae9d77c.json
