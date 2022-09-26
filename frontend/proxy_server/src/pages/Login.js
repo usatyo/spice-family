@@ -11,7 +11,7 @@ import {
     signInWithEmailAndPassword,
     onAuthStateChanged
 } from "firebase/auth";
-import { auth } from "../Firebase.js";
+import { auth, firebaseError } from "../Firebase.js";
 import { Navigate, Link } from "react-router-dom";
 
 const Login = () => {
@@ -28,7 +28,7 @@ const Login = () => {
                 loginPassword
             );
         } catch (error) {
-            alert("メールアドレスまたはパスワードが間違っています");
+            alert(firebaseError(error));
         }
     };
 

@@ -8,7 +8,7 @@ import {
     FormHelperText,
 } from '@chakra-ui/react'
 import { createUserWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-import { auth, user } from "../Firebase";
+import { auth, firebaseError } from "../Firebase";
 import { Navigate, Link } from "react-router-dom";
 import './../App.css';
 
@@ -27,7 +27,7 @@ const Register = () => {
                 registerPassword
             );
         } catch (error) {
-            alert("正しく入力してください");
+            alert(firebaseError(error));
         }
     };
 
@@ -75,7 +75,7 @@ const Register = () => {
                                             onChange={(e) => setRegisterPassword(e.target.value)}
                                         />
                                     </FormControl>
-                                    <Button width="full" marginTop="4px" type="submit" onClick={handleSubmit}>ログイン</Button>
+                                    <Button width="full" marginTop="4px" type="submit" onClick={handleSubmit}>新規登録</Button>
                                 </form>
                                 <Link to={`/login/`}>
                                     <Text fontSize={14} paddingTop="10px">ログインはこちら</Text>
