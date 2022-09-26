@@ -30,7 +30,7 @@ const MyChart = () => {
         labels.push(formatedDate);
     }
 
-    const data = Object.values(rateList).slice(-30)
+    const data = Object.values(getAllRate).slice(-30)
     console.log(data)
 
     const graphData = {
